@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>BBS</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 </head>
 <body>
-欢迎来到本论坛！
+<center><h1>欢迎登陆本论坛</h1></center>
+<div id="app" style="margin: 0 auto;text-align: center">
+    <label for="name">用户名：</label><input v-model="username" type="text" id="name"><br>
+    <label for="name">密码：</label><input v-model="password" type="password" id="password" placeholder="请输入密码"><br>
+    <button @click="submit()">登录</button>
+</div>
 </body>
+<script>
+    var vue = new Vue({
+        el:"#app",
+        data:{
+            username:"请输入用户名",
+            password:""
+        },
+        methods:{
+            submit:function () {
+                this.$http.get('/login/').then(function(res){
+                    console.log(res)
+                },function(){
+                    console.log('请求失败处理');
+                });
+            }
+        }
+    })
+
+</script>
 </html>
