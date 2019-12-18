@@ -24,7 +24,7 @@
         methods:{
             submit:function () {
                 this.$http.get('/login/').then(function(res){
-                    console.log(res)
+                    console.log(res.body.msg)
                 },function(){
                     console.log('请求失败处理');
                 });
