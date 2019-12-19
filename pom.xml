@@ -11,7 +11,7 @@
     <groupId>com.jsj174.zsq.finalwork</groupId>
     <artifactId>bbs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bbs</name>
+    <username>bbs</username>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -61,6 +61,10 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 
