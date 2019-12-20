@@ -12,13 +12,16 @@ public class Post implements Serializable {
     private String section;
     private int point;
     private int replies;
+    private int views;
+    private int top;
+    private int likes;
     private Date time;
 
-    public Post(){
+    public Post() {
 
     }
 
-    public Post(int id, int userID, String username, String title, String content, String section, int point, int replies, Date time) {
+    public Post(int id, int userID, String username, String title, String content, String section, int point, int replies, int views, int top, int likes, Date time) {
         this.id = id;
         this.userID = userID;
         this.username = username;
@@ -27,6 +30,9 @@ public class Post implements Serializable {
         this.section = section;
         this.point = point;
         this.replies = replies;
+        this.views = views;
+        this.top = top;
+        this.likes = likes;
         this.time = time;
     }
 
@@ -92,6 +98,30 @@ public class Post implements Serializable {
 
     public void setReplies(int replies) {
         this.replies = replies;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     public Date getTime() {
