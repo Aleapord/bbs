@@ -7,15 +7,20 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Mapper
 @Component
 public interface UserMapper {
-    @Select("select * from user where name = #{name}")
+    @Select("select * from user where username = #{name}")
     User getUserByName(@Param("name") String name);
 
-    @Select("select * from user where id = #{id}")
+    @Select("select * from user where userID = #{id}")
     User getUserById(@Param("id") int id);
 
-    @Delete("delete from user where id = #{id}")
+    @Select("select * from user")
+    List<User> getAllUser();
+
+    @Delete("delete from user where userID = #{id}")
     void deleteUser(@Param("id") int id);
 }

@@ -1,37 +1,46 @@
 package com.jsj174.zsq.finalwork.bbs.Models;
 
-public class User {
-    private int id;
-    private String name;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private int userID;
+    private String username;
     private String password;
-    private String icon;
+    private String gender;
+    private String address;
+    private String job;
     private int wealth;
+    private int telephone;
+
 
     public User() {
     }
 
-    public User(int id, String name, String password, String icon, int wealth) {
-        this.id = id;
-        this.name = name;
+    public User(int userID, String username, String password, String gender, String address, String job, int wealth, int telephone) {
+        this.userID = userID;
+        this.username = username;
         this.password = password;
-        this.icon = icon;
+        this.gender = gender;
+        this.address = address;
+        this.job = job;
         this.wealth = wealth;
+        this.telephone = telephone;
     }
 
-    public int getId() {
-        return id;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -42,12 +51,28 @@ public class User {
         this.password = password;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getGender() {
+        return gender;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public int getWealth() {
@@ -56,5 +81,13 @@ public class User {
 
     public void setWealth(int wealth) {
         this.wealth = wealth;
+    }
+
+    public int getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(int telephone) {
+        this.telephone = telephone;
     }
 }

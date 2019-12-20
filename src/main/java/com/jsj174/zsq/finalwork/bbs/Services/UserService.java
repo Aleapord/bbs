@@ -5,6 +5,8 @@ import com.jsj174.zsq.finalwork.bbs.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -18,6 +20,12 @@ public class UserService {
         return userMapper.getUserByName(name);
     }
     public void deleteUser(User user){
-        userMapper.deleteUser(user.getId());
+        userMapper.deleteUser(user.getUserID());
     }
+
+    public List<User> getAllUser() {
+
+        return userMapper.getAllUser();
+    }
+
 }
