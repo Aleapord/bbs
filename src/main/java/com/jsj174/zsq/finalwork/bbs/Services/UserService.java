@@ -29,4 +29,10 @@ public class UserService {
     public void deleteUser(User user){
         userMapper.deleteUser(user.getUserID());
     }
+
+    public List<User> getAllUser() {
+
+        return userMapper.getAllUser();
+    }
+
 }

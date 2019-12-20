@@ -1,8 +1,9 @@
 package com.jsj174.zsq.finalwork.bbs.Models;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Post {
+public class Post implements Serializable {
     private int id;
     private int userID;
     private String username;

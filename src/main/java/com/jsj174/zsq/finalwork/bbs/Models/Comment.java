@@ -1,6 +1,8 @@
 package com.jsj174.zsq.finalwork.bbs.Models;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment implements Serializable {
     private int commentID;
     private int userID;
     private String username;

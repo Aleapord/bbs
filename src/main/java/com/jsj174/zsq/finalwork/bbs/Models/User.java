@@ -1,6 +1,8 @@
 package com.jsj174.zsq.finalwork.bbs.Models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int userID;
     private String username;
     private String password;
