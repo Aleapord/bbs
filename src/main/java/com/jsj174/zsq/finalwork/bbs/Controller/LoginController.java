@@ -1,8 +1,11 @@
 package com.jsj174.zsq.finalwork.bbs.Controller;
 
-import com.jsj174.zsq.finalwork.bbs.Models.LoginForm;
+import com.jsj174.zsq.finalwork.bbs.Exts.UserLoginToken;
 import com.jsj174.zsq.finalwork.bbs.Models.User;
+import com.jsj174.zsq.finalwork.bbs.Services.TokenService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -21,25 +24,40 @@ public class LoginController {
     private RedisTemplate<Object,Object> redisTemplate;
 
 
+    @Autowired
+    private TokenService tokenService;
 
     @GetMapping("/")
     public String home(){
         return "index";
     }
-    @PostMapping("login/")
+    @PostMapping("/login")
     @ResponseBody
-    public List<User> login(){
-        List<User> users=null;
-        if (redisTemplate.opsForValue().get("users")==null){
-            users = userService.getAllUser();
-            System.out.println(users);
-            redisTemplate.opsForValue().set("users",users);
+    public Object login(User user) throws JSONException {
+        HashMap<String,Object> jsonObject=new HashMap<>();
+        User userForBase=userService.getUser(user.getUsername());
+        if(userForBase==null){
+            jsonObject.put("message","登录失败,用户不存在");
+            return jsonObject;
         }else {
-            users=(List<User>) redisTemplate.opsForValue().get("users");
-
+            if (!userForBase.getPassword().equals(user.getPassword())){
+                jsonObject.put("message","登录失败,密码错误");
+                return jsonObject;
+            }else {
+                String token = tokenService.getToken(userForBase);
+                jsonObject.put("token", token);
+                jsonObject.put("user", userForBase);
+                return jsonObject;
+            }
         }
-
-        return users;
+    }
+    @UserLoginToken
+    @GetMapping("/get")
+    @ResponseBody
+    public HashMap<String,Object> get(){
+        HashMap<String,Object> jsonObject=new HashMap<>();
+        jsonObject.put("msg","hello");
+        return jsonObject;
     }
 
 }

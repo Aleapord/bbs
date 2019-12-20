@@ -1,7 +1,5 @@
 package com.jsj174.zsq.finalwork.bbs.Services;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.jsj174.zsq.finalwork.bbs.Mapper.UserMapper;
 import com.jsj174.zsq.finalwork.bbs.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +28,4 @@ public class UserService {
         return userMapper.getAllUser();
     }
 
-    public String getToken(User user) {
-        String token="";
-        token= JWT.create().withAudience(user.getUserID()+"")
-                .sign(Algorithm.HMAC256(user.getPassword()));
-        return token;
-    }
 }
