@@ -32,15 +32,15 @@ public interface PostMapper {
     @Update("update post set point=#{point} where postID=#{postID}")
     void updatePoint(int point,int postID);
 
-    @Update("update post set point=#{point} where postID=#{postID}")
-    void updateReplies(int replies,int postID);
+    @Update("update post set replies=#{replies}+1 where postID=#{postID}")
+    void updateReplies(int postID);
 
-    @Update("update post set point=#{point} where postID=#{postID}")
-    void updateViews(int views,int postID);
+    @Update("update post set views=#{views}+1 where postID=#{postID}")
+    void updateViews(int postID);
 
-    @Update("update post set point=#{point} where postID=#{postID}")
+    @Update("update post set top=#{top} where postID=#{postID}")
     void updateTop(int top,int postID);
 
-    @Update("update post set point=#{point} where postID=#{postID}")
-    void updateLikes(int likes,int postID);
+    @Update("update post set likes=#{likes}+1 where postID=#{postID}")
+    void updateLikes(int postID);
 }

@@ -32,16 +32,16 @@ public class PostService {
     public void updatePoint(int point,int postID){
         postMapper.updatePoint(point,postID);
     }
-    public void updateReplies(int replies,int postID){
-        postMapper.updateReplies(replies,postID);
+    public void updateReplies(int postID){
+        postMapper.updateReplies(postID);
     }
-    public void updateViews(int views,int postID){
-        postMapper.updateViews(views,postID);
+    public void updateViews(int postID){
+        postMapper.updateViews(postID);
     }
     public void updateTop(int top,int postID){
         postMapper.updateTop(top,postID);
     }
-    public void updateLikes(int likes,int postID){
-        postMapper.updateLikes(likes,postID);
+    public void updateLikes(int postID){
+        postMapper.updateLikes(postID);
     }
 }
