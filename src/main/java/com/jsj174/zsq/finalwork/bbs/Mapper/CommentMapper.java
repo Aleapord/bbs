@@ -4,7 +4,6 @@ import com.jsj174.zsq.finalwork.bbs.Models.Comment;
 import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
-import sun.plugin.javascript.navig.LinkArray;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public interface CommentMapper {
     void addComment (@Param("comment") Comment comment);
 
     @Delete("删除评论")
-    void deleteComment(@Param("commentID") int id);
+    void deleteComment(@Param("commentID") int commentID);
 
 
 }

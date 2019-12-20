@@ -35,6 +35,9 @@ public interface PostMapper {
     @Update("update post set replies=#{replies}+1 where postID=#{postID}")
     void updateReplies(int postID);
 
+    @Update("update post set replies=#{replies}-1 where postID=#{postID}")
+    void deleteReplies(int postID);
+
     @Update("update post set views=#{views}+1 where postID=#{postID}")
     void updateViews(int postID);
 
