@@ -1,9 +1,12 @@
 package com.jsj174.zsq.finalwork.bbs.Controller;
 
 import com.jsj174.zsq.finalwork.bbs.Exts.UserLoginToken;
+import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import com.jsj174.zsq.finalwork.bbs.Models.User;
+import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.TokenService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
+import javafx.geometry.Pos;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class LoginController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private PostService postService;
 
     @GetMapping("/")
     public String home(){
@@ -51,13 +57,10 @@ public class LoginController {
             }
         }
     }
-    @UserLoginToken
     @GetMapping("/get")
     @ResponseBody
-    public HashMap<String,Object> get(){
-        HashMap<String,Object> jsonObject=new HashMap<>();
-        jsonObject.put("msg","hello");
-        return jsonObject;
+    public List<Post> get(){
+        return postService.getAllPost();
     }
 
 }
