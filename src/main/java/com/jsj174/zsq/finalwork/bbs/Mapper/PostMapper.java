@@ -27,10 +27,10 @@ public interface PostMapper {
     void updatePost(@Param("post") Post post);
 
     @Update("update post set section=#{section} where postID=#{postID}")
-    void updateSection(String section,int postID);
+    void updateSection(String section, int postID);
 
     @Update("update post set point=#{point} where postID=#{postID}")
-    void updatePoint(int point,int postID);
+    void updatePoint(int point, int postID);
 
     @Update("update post set replies=#{replies}+1 where postID=#{postID}")
     void updateReplies(int postID);
@@ -42,7 +42,7 @@ public interface PostMapper {
     void updateViews(int postID);
 
     @Update("update post set top=#{top} where postID=#{postID}")
-    void updateTop(int top,int postID);
+    void updateTop(int top, int postID);
 
     @Update("update post set likes=#{likes}+1 where postID=#{postID}")
     void updateLikes(int postID);
