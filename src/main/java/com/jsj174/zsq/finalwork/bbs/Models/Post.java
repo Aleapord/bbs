@@ -11,13 +11,14 @@ public class Post {
     private String section;
     private int point;
     private int replies;
+    private int views;
     private Date time;
 
-    public Post(){
+    public Post() {
 
     }
 
-    public Post(int id, int userID, String username, String title, String content, String section, int point, int replies, Date time) {
+    public Post(int id, int userID, String username, String title, String content, String section, int point, int replies, int views, Date time) {
         this.id = id;
         this.userID = userID;
         this.username = username;
@@ -26,6 +27,7 @@ public class Post {
         this.section = section;
         this.point = point;
         this.replies = replies;
+        this.views = views;
         this.time = time;
     }
 
@@ -91,6 +93,14 @@ public class Post {
 
     public void setReplies(int replies) {
         this.replies = replies;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 
     public Date getTime() {
