@@ -35,6 +35,16 @@ public class PostController {
        return postService.getPost(postId);
     }
 
+    @GetMapping("/like/{postID}")
+    @ResponseBody
+    public HashMap<String,Object> like(@PathVariable int postID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        postService.updateLikes(postID);
+        hashMap.put("msg","点赞成功！");
+        return hashMap;
+    }
+
+
     @GetMapping("/getComments/{postID}")
     @ResponseBody
     public List<Comment> getComments(@PathVariable int postID){
