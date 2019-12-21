@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 public interface CommentMapper {
 
     @Insert("insert into comment(userID,username,postID,comment)" +
-            "value(#{comment.userID},#{comment.username},#{comment.postID},#{comment.comment}")
+            "value(#{comment.userID},#{comment.username},#{comment.postID},#{comment.comment})")
     void addComment(@Param("comment") Comment comment);
 
     @Select("select username,comment from comment where postID=#{postID}")
     Post getComment(@Param("postID") int postID);
 
-    @Delete("delete from comment where comment=#{commentID}")
+    @Delete("delete from comment where commentID=#{commentID}")
     void deleteComment(@Param("commentID") int commentID);
 }

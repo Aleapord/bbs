@@ -15,13 +15,13 @@ public class Post implements Serializable {
     private int views;
     private int top;
     private int likes;
-    private Date time;
+    private String time;
 
     public Post() {
 
     }
 
-    public Post(int postID, int userID, String username, String title, String content, String section, int point, int replies, int views, int top, int likes, Date time) {
+    public Post(int postID, int userID, String username, String title, String content, String section, int point, int replies, int views, int top, int likes, String time) {
         this.postID = postID;
         this.userID = userID;
         this.username = username;
@@ -124,29 +124,13 @@ public class Post implements Serializable {
         this.likes = likes;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + postID +
-                ", userID=" + userID +
-                ", username='" + username + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", section='" + section + '\'' +
-                ", point=" + point +
-                ", replies=" + replies +
-                ", views=" + views +
-                ", top=" + top +
-                ", likes=" + likes +
-                ", time=" + time +
-                '}';
-    }
+   
 }
