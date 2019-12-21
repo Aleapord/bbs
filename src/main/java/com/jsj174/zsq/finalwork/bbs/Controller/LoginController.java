@@ -50,20 +50,20 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public Object login(User user) throws JSONException {
-        HashMap<String,Object> jsonObject=new HashMap<>();
+        HashMap<String,Object> hashMap=new HashMap<>();
         User userForBase=userService.getUser(user.getUsername());
         if(userForBase==null){
-            jsonObject.put("message","登录失败,用户不存在");
-            return jsonObject;
+            hashMap.put("message","登录失败,用户不存在");
+            return hashMap;
         }else {
             if (!userForBase.getPassword().equals(user.getPassword())){
-                jsonObject.put("message","登录失败,密码错误");
-                return jsonObject;
+                hashMap.put("message","登录失败,密码错误");
+                return hashMap;
             }else {
                 String token = tokenService.getToken(userForBase);
-                jsonObject.put("token", token);
-                jsonObject.put("user", userForBase);
-                return jsonObject;
+                hashMap.put("token", token);
+                hashMap.put("user", userForBase);
+                return hashMap;
             }
         }
     }
