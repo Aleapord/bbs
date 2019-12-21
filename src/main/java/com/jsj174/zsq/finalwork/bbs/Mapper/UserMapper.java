@@ -13,17 +13,17 @@ public interface UserMapper {
             "values(#{username},#{password},#{gender},#{address},#{job},#{wealth},#{telephone),#{introduction}")
     void insertUser(User user);
 
-    @Select("select * from user where name = #{name}")
-    User getUserByName(@Param("name") String name);
+    @Select("select * from user where username = #{username}")
+    User getUserByName(@Param("username") String username);
 
-    @Select("select * from user where id = #{id}")
-    User getUserById(@Param("id") int id);
+    @Select("select * from user where userID = #{userID}")
+    User getUserById(@Param("userID") int userID);
 
     @Select("select * from user")
     List<User> getAllUser();
 
-    @Delete("delete from user where id = #{id}")
-    void deleteUser(@Param("id") int id);
+    @Delete("delete from user where userID = #{userID}")
+    void deleteUser(@Param("userID") int userID);
 
     @Update("update user set username=#{username},gender=#{gender},address=#{address},job=#{job},telephone=#{telephone},introduction=#{introduction}")
     void updateUser(User user);
