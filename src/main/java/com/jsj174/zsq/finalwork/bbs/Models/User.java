@@ -11,11 +11,12 @@ public class User implements Serializable {
     private String job;
     private int wealth;
     private int telephone;
+    private String introduction;
 
     public User() {
     }
 
-    public User(int userID, String username, String password, String gender, String address, String job, int wealth, int telephone) {
+    public User(int userID, String username, String password, String gender, String address, String job, int wealth, int telephone, String introduction) {
         this.userID = userID;
         this.username = username;
         this.password = password;
@@ -24,6 +25,7 @@ public class User implements Serializable {
         this.job = job;
         this.wealth = wealth;
         this.telephone = telephone;
+        this.introduction = introduction;
     }
 
     public int getUserID() {
@@ -88,5 +90,13 @@ public class User implements Serializable {
 
     public void setTelephone(int telephone) {
         this.telephone = telephone;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

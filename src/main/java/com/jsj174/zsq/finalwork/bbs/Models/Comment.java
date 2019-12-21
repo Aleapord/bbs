@@ -6,7 +6,7 @@ public class Comment implements Serializable {
     private int commentID;
     private int userID;
     private String username;
-    private int id;
+    private int postID;
     private String comment;
 
     public Comment() {
@@ -16,7 +16,7 @@ public class Comment implements Serializable {
         this.commentID = commentID;
         this.userID = userID;
         this.username = username;
-        this.id = id;
+        this.postID = id;
         this.comment = comment;
     }
 
@@ -44,12 +44,12 @@ public class Comment implements Serializable {
         this.username = username;
     }
 
-    public int getId() {
-        return id;
+    public int getPostID() {
+        return postID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPostID(int postID) {
+        this.postID = postID;
     }
 
     public String getComment() {

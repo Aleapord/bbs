@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Post implements Serializable {
-    private int id;
+    private int postID;
     private int userID;
     private String username;
     private String title;
@@ -21,8 +21,8 @@ public class Post implements Serializable {
 
     }
 
-    public Post(int id, int userID, String username, String title, String content, String section, int point, int replies, int views, int top, int likes, Date time) {
-        this.id = id;
+    public Post(int postID, int userID, String username, String title, String content, String section, int point, int replies, int views, int top, int likes, Date time) {
+        this.postID = postID;
         this.userID = userID;
         this.username = username;
         this.title = title;
@@ -36,12 +36,12 @@ public class Post implements Serializable {
         this.time = time;
     }
 
-    public int getId() {
-        return id;
+    public int getPostID() {
+        return postID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPostID(int postID) {
+        this.postID = postID;
     }
 
     public int getUserID() {
