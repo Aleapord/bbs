@@ -6,8 +6,6 @@ import com.jsj174.zsq.finalwork.bbs.Models.User;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.TokenService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
-import com.sun.xml.internal.ws.server.ServerRtException;
-import javafx.geometry.Pos;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +62,8 @@ public class LoginController {
             hashMap.put("status",-1);
         }
         User user2=userService.getUser(user.getUsername());
-     hashMap.put("msg",msg);
-     hashMap.put("user",user2);
+        hashMap.put("msg",msg);
+        hashMap.put("user",user2);
         return hashMap;
     }
 
