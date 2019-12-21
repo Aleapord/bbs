@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public interface CommentMapper {
 
     @Insert("insert into comment(userID,username,postID,comment)" +
-            "value(#{userID},#{username},#{postID},#{comment}")
+            "value(#{comment.userID},#{comment.username},#{comment.postID},#{comment.comment}")
     void addComment(@Param("comment") Comment comment);
 
     @Select("select username,comment from comment where postID=#{postID}")

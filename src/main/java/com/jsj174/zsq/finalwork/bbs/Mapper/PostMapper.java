@@ -19,31 +19,31 @@ public interface PostMapper {
     @Select("select * from post where postID = #{postID}")
     Post getPost(@Param("postID") int postID);
 
-    @Insert("insert into post(userID,username,title,content,section,point,time" +
-            "values(#{userID},#{username},#{title},#{content},#{section},#{point},#{time}")
+    @Insert("insert into post(userID,username,title,content,section,point,time)" +
+            "values(#{post.userID},#{post.username},#{post.title},#{post.content},#{post.section},#{post.point},#{post.time})")
     void addPost(@Param("post") Post post);
 
-    @Update("update post set title=#{title},content=#{content} where postID=#{postID}")
+    @Update("update post set title=#{post.title},content=#{post.content} where postID=#{post.postID}")
     void updatePost(@Param("post") Post post);
 
     @Update("update post set section=#{section} where postID=#{postID}")
-    void updateSection(String section, int postID);
+    void updateSection(@Param("section") String section, @Param("postID") int postID);
 
     @Update("update post set point=#{point} where postID=#{postID}")
-    void updatePoint(int point, int postID);
+    void updatePoint(@Param("point") int point, @Param("postID") int postID);
 
-    @Update("update post set replies=#{replies}+1 where postID=#{postID}")
-    void updateReplies(int postID);
+    @Update("update post set replies=replies+1 where postID=#{postID}")
+    void updateReplies(@Param("postID") int postID);
 
-    @Update("update post set replies=#{replies}-1 where postID=#{postID}")
-    void deleteReplies(int postID);
+    @Update("update post set replies=replies-1 where postID=#{postID}")
+    void deleteReplies(@Param("postID") int postID);
 
-    @Update("update post set views=#{views}+1 where postID=#{postID}")
-    void updateViews(int postID);
+    @Update("update post set views=views+1 where postID=#{postID}")
+    void updateViews(@Param("postID") int postID);
 
     @Update("update post set top=#{top} where postID=#{postID}")
-    void updateTop(int top, int postID);
+    void updateTop(@Param("top") int top, @Param("postID") int postID);
 
-    @Update("update post set likes=#{likes}+1 where postID=#{postID}")
-    void updateLikes(int postID);
+    @Update("update post set likes=likes+1 where postID=#{postID}")
+    void updateLikes(@Param("postID") int postID);
 }

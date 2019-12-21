@@ -9,9 +9,9 @@ import java.util.List;
 @Mapper
 @Component
 public interface UserMapper {
-    @Insert("insert into user(username,password,gender,address,job,wealth,telephone,introduction) " +
-            "values(#{username},#{password},#{gender},#{address},#{job},#{wealth},#{telephone),#{introduction}")
-    void insertUser(User user);
+    @Insert("insert into user(username,password,gender,address,job,wealth,telephone,introduction)" +
+            "values(#{user.username},#{user.password},#{user.gender},#{user.address},#{user.job},#{user.wealth},#{user.telephone},#{user.introduction})")
+    void insertUser(@Param("user") User user);
 
     @Select("select * from user where username = #{username}")
     User getUserByName(@Param("username") String username);
@@ -25,18 +25,18 @@ public interface UserMapper {
     @Delete("delete from user where userID = #{userID}")
     void deleteUser(@Param("userID") int userID);
 
-    @Update("update user set username=#{username},gender=#{gender},address=#{address},job=#{job},telephone=#{telephone},introduction=#{introduction}")
-    void updateUser(User user);
+    @Update("update user set username=#{user.username},gender=#{user.gender},address=#{user.address},job=#{user.job},telephone=#{user.telephone},intro=#{user.introduction}")
+    void updateUser(@Param("user") User user);
 
     @Select("select password from user where userId=#{userID}")
-    String getPassword(int userID);
+    String getPassword(@Param("userID") int userID);
 
     @Update("update user set password=#{password} where userID=#{userID}")
-    void updatePassword(String password, int userID);
+    void updatePassword(@Param("password") String password, @Param("userID") int userID);
 
     @Select("select wealth from user where userID=#{userID}")
-    int getWealth(int userID);
+    int getWealth(@Param("userID") int userID);
 
     @Update("update user set wealth=#{wealth} where userID=#{userID")
-    void updateWealth(int wealth, int userID);
+    void updateWealth(@Param("wealth") int wealth, @Param("userID") int userID);
 }
