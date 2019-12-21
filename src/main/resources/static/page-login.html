@@ -98,7 +98,10 @@
                     提示
                 </div>
                 <form class="form-default">
-                    <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0"><span style="cursor: default" id="message">加载失败！！！</span></div>
+                    <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0">
+                        <table id="popContents" style="text-align: left;margin: 0 auto">
+                        </table>
+                    </div>
                     <div class="form-group" style="margin-bottom: 0">
                         <input type="button" data-dismiss="modal" class="btn btn-secondary btn-block pt-close-modal" value="好的">
                     </div>
@@ -235,18 +238,26 @@
                 console.log(this.userName);
                 console.log(this.userPassword);
                 this.$http.post("/login",{username: this.userName,password: this.userPassword},{emulateJSON:true}).then(function(value) {
-                    console.log(value.body);
-                    if(value.body.message!==1){
-                        popMessage(value.body.message)
-                    } else{
+                    var message = value.body.message;
+                    if(message===1){
+                        message = '登录成功！';
                         sessionStorage.setItem("username",value.body.user.username);
                         sessionStorage.setItem("userID",value.body.user.userID);
                         sessionStorage.setItem("token",value.body.token);
                         sessionStorage.setItem("coins",value.body.user.wealth);
-                       location.href = "/";
-                    }
+                        setTimeout(function() {location.href = "/";},1000);
+                        $("#popContents").html(
+                            "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd6065'>&#xeaf4;</td><td>" +
+                            message + "</td></tr>");
+                    }else
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd6065'>&#xeaf6;</td><td>" +
+                            message + "</td></tr>");
+                    popMessage();
                 },function(reason) {
-                    console.log(reason.body.message)
+                    $("#popContents").html(
+                        "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd6065'>&#xeaf6;</td>" +
+                        "<td>服务器提示提示了一个错误！</td></tr>");
+                    popMessage();
                 })
             }
         }
@@ -260,8 +271,7 @@
         $('#userName').attr("autocomplete",t ? "on" : "false");
         return t;
     }
-    function popMessage(message) {
-        $("#message").text(message);
+    function popMessage() {
         $("#tipsModal").modal('show');
     }
 

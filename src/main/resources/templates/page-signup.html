@@ -80,14 +80,14 @@
             <div class="tt-modal-advancedSearch">
                 <div class="tt-modal-title">
                     <i class="pt-icon">
-                        <span class="icon-moon" style="font-size: 30px;color: #d4d634">&#xec74;</span>
+                        <span class="icon-moon" style="font-size: 30px;color: #d4d634;font-style: normal">&#xec74;</span>
                     </i>
                     提示
                 </div>
                 <form class="form-default">
                     <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0">
-                        <ul id="popContents">
-                        </ul>
+                        <table id="popContents" style="text-align: left;margin: 0 auto">
+                        </table>
                     </div>
                     <div class="form-group" style="margin-bottom: 0">
                         <input type="button" data-dismiss="modal" class="btn btn-secondary btn-block pt-close-modal" value="好的">
@@ -213,16 +213,15 @@
         var nameInput = $("#signUpUserName").get(0);
         var phoneInput = $("#signUpUserPhone").get(0);
         var passwordInput = $("#signUpUserPassword").get(0);
-        var str = "<ul style='list-style-type: I;text-align: left'>";
+        var str = "";
         if(!nameInput.checkValidity())
-            str += "<li>用户姓名格式不正确！</li>";
+            str += "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>用户姓名格式不正确！</td></tr>";
         if(!phoneInput.checkValidity())
-            str += "<li>电话号码格式不正确！</li>";
+            str += "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>电话号码格式不正确！</td></tr>";
         if(!passwordInput.checkValidity())
-            str += "<li>密码格式不正确！</li>";
-        str += "</ul>";
+            str += "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>密码格式不正确！</td></tr>";
 
-        if(str === "<ul style='list-style-type: I;text-align: left'></ul>") {
+        if(str === "") {
             vue.submit();
         }else {
             $("#popContents").html(str);
@@ -243,13 +242,13 @@
                 this.$http.post("/sign-up",{username: this.name,telephone:this.phone,password: this.password},{emulateJSON:true}).then(function(value) {
                     console.log(value.body);
                     if(value.body.status===1){
-                        popMessage_1(value.body.msg);
+                        popMessage_1(value.body.msg,1);
 
                         setTimeout(function() {
                             location.href = "/login";
-                        },1000);
+                        },500);
                     }else {
-                        popMessage_1(value.body.msg);
+                        popMessage_1(value.body.msg,-1);
                     }
                 },function(reason) {
                     console.log(reason.body.message)
@@ -260,11 +259,12 @@
     function popMessage() {
         $("#tipsModal").modal('show');
     }
-    function popMessage_1(message) {
-        var span = document.createElement("SPAN");
-        span.appendChild(document.createTextNode(message));
-        span.style.cursor = "default";
-        $("#popContents").append(span);
+    function popMessage_1(message,isSuccess) {
+        if(isSuccess === 1) {
+            $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>" + message+ "</td></tr>");
+        }else {
+            $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd6065'>&#xeaf6;</td><td>" + message+ "</td></tr>");
+        }
         $("#tipsModal").modal('show');
     }
 </script>

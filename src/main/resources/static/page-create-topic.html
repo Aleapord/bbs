@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Forum - Responsive HTML5 Template</title>
@@ -17,6 +17,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="js/tools.js"></script>
 </head>
 <body>
 <!-- tt-mobile menu -->
@@ -37,7 +38,7 @@
     </div>
 </nav>
 <header id="tt-header">
-    <div class="container">
+    <div class="container" id="header_User">
         <div class="row tt-row no-gutters">
             <div class="col-auto">
                 <!-- toggle mobile menu -->
@@ -117,29 +118,42 @@
                 </div>
                 <!-- /tt-search -->
             </div>
-            <div class="col-auto ml-auto">
-                <div class="tt-user-info d-flex justify-content-center">
-                    <a id="js-settings-btn" class="tt-btn-icon">
-                        <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
-                    </a>
-                    <div class="tt-avatar-icon tt-size-md">
-                        <i class="tt-icon"><svg><use xlink:href="#icon-ava-j"></use></svg></i>
+
+            <!-- 如果有token,表示登录了账号 -->
+            <template v-if="hasToken!==''">
+                <div class="col-auto ml-auto">
+                    <div class="tt-user-info d-flex justify-content-center">
+                        <a id="js-settings-btn" class="tt-btn-icon">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
+                        </a>
+                        <div class="tt-avatar-icon tt-size-md">
+                            <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(username)"></use></svg></i>
+                        </div>
+                        <a href="page-single-user.html" class="tt-btn-icon">
+                            <span>{{username}}</span>
+                        </a>
                     </div>
-                    <a href="page-single-user.html" class="tt-btn-icon">
-                        <span>Jax Bob</span>
-                    </a>
                 </div>
-            </div>
+            </template>
+            <!-- 否则就没有登录账号 -->
+            <template v-else>
+                <div class="col-auto ml-auto">
+                    <div class="tt-account-btn">
+                        <a href="/login" class="btn btn-primary">登录</a>
+                        <a href="/sign-up" class="btn btn-secondary">注册</a>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </header>
 <main id="tt-pageContent">
-    <div class="container">
+    <div class="container" id="form_PostForum">
         <div class="tt-wrapper-inner">
             <h1 class="tt-title-border">
                 发布一个帖子
             </h1>
-            <form class="form-default form-create-topic" id="app">
+            <form class="form-default form-create-topic">
                 <div class="form-group">
                     <label for="forumTitle">帖子标题</label>
                     <div class="tt-value-wrapper">
@@ -152,7 +166,7 @@
                     <label>帖子类型</label>
                     <div class="tt-js-active-btn tt-wrapper-btnicon">
                         <div class="row tt-w410-col-02">
-                            <input v-model="type" type="hidden" id="forumType" value="普通">
+                            <input v-model="type" type="hidden" id="forumType">
                             <div class="col-4 col-lg-3 col-xl-2">
                                 <span id="general" onclick="focusIt(this)" style="cursor: pointer" class="tt-button-icon">
                                     <span class="tt-icon">
@@ -180,7 +194,7 @@
                     <div class="col-md-4">
                         <div id="rewardDiv" class="form-group" style="display: none">
                             <label for="questionCoin">设置悬赏币</label>
-                            <input v-model="questionCoin" type="number" min="1" max="{{coins}}" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
+                            <input v-model="questionCoin" type="number" v-bind:min="checkForMin(coins)" v-bind:max="getCoins(coins)" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
                         </div>
                     </div>
                 </div>
@@ -195,7 +209,7 @@
                                 <label>所属版块</label>
                                 <select class="form-control" id="forumSection" v-model="section" required>
                                     <template v-for="bk in bks">
-                                        <option value="{{bk}}">bk.substr(2,bk.length)</option>
+                                        <option v-bind:value="getSection(bk)">{{bk.substr(2,bk.length - 2)}}</option>
                                     </template>
                                 </select>
                             </div>
@@ -211,6 +225,8 @@
         </div>
     </div>
 </main>
+
+<!-- 用户的设置 -->
 <div id="js-popup-settings" class="tt-popup-settings">
     <div class="tt-btn-col-close">
         <a href="#">
@@ -259,6 +275,7 @@
         </div>
     </form>
 </div>
+<!-- 加号的一个图标（发帖子的链接） -->
 <a href="page-create-topic.html" class="tt-btn-create-topic">
     <span class="tt-icon">
         <svg>
@@ -303,21 +320,21 @@
     </div>
 </div>
 
-<!-- 弹出的提示模态框 -->
+<!-- 弹出的模态框 -->
 <div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="tt-modal-advancedSearch">
                 <div class="tt-modal-title">
                     <i class="pt-icon">
-                        <span class="icon-moon" style="font-size: 30px;color: #d4d634">&#xec74;</span>
+                        <span class="icon-moon" style="font-size: 30px;color: #d4d634;font-style: normal">&#xec74;</span>
                     </i>
                     提示
                 </div>
                 <form class="form-default">
                     <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0">
-                        <ul id="popContents">
-                        </ul>
+                        <table id="popContents" style="text-align: left;margin: 0 auto">
+                        </table>
                     </div>
                     <div class="form-group" style="margin-bottom: 0">
                         <input type="button" data-dismiss="modal" class="btn btn-secondary btn-block pt-close-modal" value="好的">
@@ -445,17 +462,32 @@
         var questionCoin = $("#questionCoin").get(0);
         var forumContents = $("#forumContents").get(0);
         var forumSection = $("#forumSection").get(0);
-        var str = "<ul style='list-style-type: I;text-align: left'>";
-        if(!forumTitle.checkValidity())
-            str += "<li>标题不能为空！</li>";
-        if(!forumContents.checkValidity())
-            str += "<li>内容不能为空！</li>";
-        if(!forumSection.checkValidity())
-            str += "<li>请选择版块！</li>";
-        str += "</ul>";
 
-        if(str === "<ul style='list-style-type: I;text-align: left'></ul>") {
-            vue.submit();
+        var str = "";
+        if(forumTitle.checkValidity()) {
+            if(forumContents.checkValidity()) {
+                if(vue_PostForum.$data.type === '悬赏') {
+                    if(questionCoin.checkValidity()) {
+                        if(forumSection.checkValidity()) {
+                            if(!forumContents.checkValidity())
+                                str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>帖子内容不能为空！</td></tr>";
+                        }else {
+                            str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>版块不能为空！</td></tr>";
+                        }
+                    }else {
+                        str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>请检查悬赏币是否正确！</td></tr>";
+                    }
+                }
+            }else {
+                str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>帖子类型不能为空！</td></tr>";
+            }
+        }else {
+            str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>帖子标题不能为空！</td></tr>";
+        }
+        if(vue_User.$data.username === null)
+            str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeaf6;</td><td>登录之后才能发帖子！</td></tr>";
+        if(str === "") {
+            vue_PostForum.submit();
         }else {
             $("#popContents").html(str);
             popMessage();
@@ -476,24 +508,65 @@
             $("#inputQuestionCoin").removeAttr("required");
         }
     }
-
-    var vue = new Vue({
-        el:"#app",
-        data:{
-            title:"",
-            type:"",
-            questionCoin: "",
-            contents: "",
-            coins: sessionStorage.getItem("coins"),
-            section: "",
-            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影"]
+    /* 头部检查用户是否登录 */
+    var vue_User = new Vue({
+        el: "#header_User",
+        data: {
+            hasToken: sessionStorage.getItem("token") !== null ? "hasLogined" : "",
+            username: sessionStorage.getItem("username"),
+            userID: sessionStorage.getItem("userID")
         },
-        methods:{
-            submit:function () {
-                if($("#forumTitle").get(0).checkValidity() && $("#forumType").get(0).checkValidity() && $("#forumContents").get(0).checkValidity() && $("#forumSection").get(0).checkValidity())
-                    alert("sdjfl");
+        methods: {
+            name_picture: function(name) {
+                return "#icon-ava-" + name.substr(0,1).toLowerCase();
             }
         }
     });
+    /* 发帖子部分的vue */
+    var vue_PostForum = new Vue({
+        el:"#form_PostForum",
+        data:{
+            title:"",
+            type:"",
+            questionCoin: null,
+            contents: "",
+            coins: sessionStorage.getItem("coins") !== null ? sessionStorage.getItem("coins") : 0,
+            section: "",
+            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐"]
+        },
+        methods:{
+            getCoins(coins) {
+                return coins;
+            },
+            getSection(section) {
+                return section;
+            },
+            checkForMin(coins) {
+                return coins >= 1 ? 1 : 0;
+            },
+            submit:function () {
+                if(this.type === '普通')
+                    this.questionCoin = 0;
+                this.$http.post("/post/addpost",{
+                    userID: vue_User.$data.userID,
+                    username: vue_User.$data.username,
+                    title: this.title,
+                    point: parseInt(this.questionCoin == null ? "0" : this.questionCoin),
+                    section: this.section,
+                    content: this.contents,
+                    time: new Date().format("yyyy-MM-dd hh:mm:ss")},{emulateJSON:true}).then(function(value) {
+                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！</td></tr>");
+                    popMessage();
+                },function(reason) {
+                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
+                    popMessage();
+                });
+            }
+        }
+    });
+    /* 显示模态框和提示信息 */
+    function popMessage() {
+        $("#tipsModal").modal('show');
+    }
 </script>
 </html>
