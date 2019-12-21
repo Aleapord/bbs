@@ -207,7 +207,7 @@
                         </b>
                     </div>
                     <div class="tt-item-info info-bottom">
-                        <a href="#" class="tt-icon-btn">
+                        <a href="#" @click="like()" class="tt-icon-btn">
                             <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
                             <span class="tt-text">{{post.likes}}</span>
                         </a>
@@ -668,6 +668,13 @@
                 var url = "/post/getComments/"+this.postID;
                 this.$http.get(url).then(function (value) {
                     console.log(value.body);
+                    this.comments=value.body;
+                },function (reason) { console.log("失败！") })
+            },
+            like:function(){
+                var url = "/post/like/"+this.postID;
+                this.$http.get(url).then(function (value) {
+                    location.reload();
                     this.comments=value.body;
                 },function (reason) { console.log("失败！") })
             },
