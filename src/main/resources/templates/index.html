@@ -151,7 +151,7 @@
                         </svg>
                     </div>
                     <div class="tt-col-description">
-                        <h6 class="tt-title"><a href="page-single-topic.html">
+                        <h6 @click="sessionStorage.setItem('Detail_postID',post.id)" class="tt-title"><a href="page-single-topic.html">
                             {{post.title}}
                         </a></h6>
                         <div class="row align-items-center no-gutters">
@@ -169,7 +169,7 @@
                     <div class="tt-col-category"><span class="tt-badge" v-bind:class="class_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</span></div>
                     <div class="tt-col-value  hide-mobile">{{post.like}}</div>
                     <div class="tt-col-value tt-color-select  hide-mobile">{{post.replies}}</div>
-                    <div class="tt-col-value  hide-mobile">{{post.nums}}</div>
+                    <div class="tt-col-value  hide-mobile">{{post.views}}</div>
                     <div class="tt-col-value hide-mobile">{{post.point}}</div>
                 </div>
             </template>

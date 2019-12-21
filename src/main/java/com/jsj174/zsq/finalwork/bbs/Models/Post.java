@@ -131,4 +131,22 @@ public class Post implements Serializable {
     public void setTime(Date time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + postID +
+                ", userID=" + userID +
+                ", username='" + username + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", section='" + section + '\'' +
+                ", point=" + point +
+                ", replies=" + replies +
+                ", views=" + views +
+                ", top=" + top +
+                ", likes=" + likes +
+                ", time=" + time +
+                '}';
+    }
 }

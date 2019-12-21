@@ -37,6 +37,16 @@ public class LoginController {
     public String home(){
         return "index";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "page-login";
+    }
+    @GetMapping("/sign-up")
+    public String signUp(){
+
+        return "page-signup";
+    }
     @PostMapping("/login")
     @ResponseBody
     public Object login(User user) throws JSONException {
@@ -60,6 +70,9 @@ public class LoginController {
     @GetMapping("/get")
     @ResponseBody
     public List<Post> get(){
+
+        System.out.println(postService.getAllPost());
+
         return postService.getAllPost();
     }
 
