@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-secondary btn-block" value="登录">
+                        <input type="button" onclick="login()" class="btn btn-secondary btn-block" value="登录">
                     </div>
                     <p>还没有账号? <a href="/signup" class="tt-underline">在此注册</a></p>
                     <div class="tt-notes">
@@ -98,7 +98,7 @@
                     提示
                 </div>
                 <form class="form-default">
-                    <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0"><span style="cursor: default">加载失败！！！</span></div>
+                    <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0"><span style="cursor: default" id="message">加载失败！！！</span></div>
                     <div class="form-group" style="margin-bottom: 0">
                         <input type="button" data-dismiss="modal" class="btn btn-secondary btn-block pt-close-modal" value="好的">
                     </div>
@@ -223,7 +223,6 @@
         vue.submit();
         return false;
     }
-    $("#tipsModal").modal('show');
     var vue = new Vue({
         el: "#main",
         data: {
@@ -234,9 +233,18 @@
         methods : {
             submit: function() {
                 console.log(this.userName);
-                console.log(this.userPassword)
+                console.log(this.userPassword);
                 this.$http.post("/login",{username: this.userName,password: this.userPassword},{emulateJSON:true}).then(function(value) {
                     console.log(value.body);
+                    if(value.body.message!==1){
+                        popMessage(value.body.message)
+                    } else{
+                        sessionStorage.setItem("username",value.body.user.username);
+                        sessionStorage.setItem("userID",value.body.user.userID);
+                        sessionStorage.setItem("token",value.body.token);
+                        sessionStorage.setItem("coins",value.body.user.wealth);
+                       location.href = "/";
+                    }
                 },function(reason) {
                     console.log(reason.body.message)
                 })
@@ -252,13 +260,9 @@
         $('#userName').attr("autocomplete",t ? "on" : "false");
         return t;
     }
-    /* 将rememberMe监听 */
-    vue.$watch('rememberMe',(newValue,oldValue) => {
-        $('#userName').attr("autocomplete",newValue === 'true' ? "on" : "false");
-    });
-    // 如果是记住账号，从localStorage里读取出来-rememberedName
-    if('on' === vue.$data.rememberMe) {
-        vue.$data.username = localStorage.getItem("rememberedName");
+    function popMessage(message) {
+        $("#message").text(message);
+        $("#tipsModal").modal('show');
     }
 
 </script>

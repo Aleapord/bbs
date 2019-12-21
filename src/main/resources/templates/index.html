@@ -54,7 +54,7 @@
                     <nav>
                         <ul>
                             <li><a href="page-tabs.html"><span>关于</span></a></li>
-                            <li><a href="page-categories.html"><span>板块</span></a></li>
+                            <li><a href="page-categories.html"><span>版块</span></a></li>
                             <li><a href="page-questions.html"><span>问答</span></a></li>
                             <li><a href="page-create-topic.html"><span>发帖子</span></a></li>
                             <li>
@@ -117,8 +117,8 @@
 
             <div class="col-auto ml-auto">
                 <div class="tt-account-btn">
-                    <a href="page-login.html" class="btn btn-primary">登录</a>
-                    <a href="page-signup.html" class="btn btn-secondary">注册</a>
+                    <a href="/login" class="btn btn-primary">登录</a>
+                    <a href="/sign-up" class="btn btn-secondary">注册</a>
                 </div>
             </div>
 
@@ -130,7 +130,7 @@
         <div class="tt-topic-list" id="forums">
             <div class="tt-list-header">
                 <div class="tt-col-topic" style="font-size: initial">帖子标题</div>
-                <div class="tt-col-category" style="font-size: initial">板块</div>
+                <div class="tt-col-category" style="font-size: initial">版块</div>
                 <div class="tt-col-value hide-mobile" style="font-size: initial">点赞</div>
                 <div class="tt-col-value hide-mobile" style="font-size: initial">回复</div>
                 <div class="tt-col-value hide-mobile" style="font-size: initial">阅读</div>
@@ -149,7 +149,7 @@
                             </svg>
                         </div>
                         <div class="tt-col-description">
-                            <h6 class="tt-title"><a href="page-single-topic.html">
+                            <h6 class="tt-title"><a @click="sessionStorage.setItem('Detail_postID',post.postID)" href="page-single-topic.html">
                                 <template v-if="post.top!==0">
                                     <svg class="tt-icon">
                                         <use xlink:href="#icon-pinned"></use>
@@ -169,9 +169,9 @@
                             </div>
                         </div>
                         <div class="tt-col-category"><span class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</span></div>
-                        <div class="tt-col-value  hide-mobile">{{post.like}}</div>
+                        <div class="tt-col-value  hide-mobile">{{post.likes}}</div>
                         <div class="tt-col-value tt-color-select  hide-mobile">{{post.replies}}</div>
-                        <div class="tt-col-value  hide-mobile">{{post.nums}}</div>
+                        <div class="tt-col-value  hide-mobile">{{post.views}}</div>
                         <div class="tt-col-value hide-mobile">{{active_post(post.time)}}</div>
                     </div>
                     <template v-if="getRandomNum()===indexOf(post)">
@@ -491,7 +491,7 @@
                 return temp + "d";
             },
             getPostList: function(){
-                this.$http.get("/get").then(function (value) {
+                this.$http.get("/post/").then(function (value) {
                     this.posts = value.body;
                     console.log(value.body)
                 },function (reason) {

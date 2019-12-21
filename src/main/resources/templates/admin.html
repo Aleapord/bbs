@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BBS管理员界面</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+<div id="app"><center><h1>BBS管理员界面</h1></center>
+    <br>
+    <center><h3>所有帖子</h3></center>
+
+
+    <table border="1">
+        <tr>
+            <td>帖子id</td>
+            <td>帖子主题</td>
+            <td>帖子作者</td>
+            <td>点赞人数</td>
+            <td>查看人数</td>
+            <td>板块</td>
+            <td>回复数</td>
+            <td>发帖时间</td>
+        </tr>
+        <template v-for="post in posts">
+            <tr>
+                <td>{{post.postID}}</td>
+                <td>{{post.title}}</td>
+                <td>{{post.username}}</td>
+                <td>{{post.likes}}</td>
+                <td>{{post.views}}</td>
+                <td>{{post.section}}</td>
+                <td>{{post.replies}}</td>
+                <td>{{post.time}}</td>
+            </tr>
+        </template>
+
+    </table>
+
+</div>
+</body>
+<script>
+    var vue = new Vue({
+        el:"#app",
+        data:{
+            posts:null
+        },
+        methods:{
+          getPosts:function () {
+              this.$http.get('/getpostlist').then(function (value) {
+                  this.posts=value.body;
+              },function (reason) {
+                  console.log(reason.message)
+              })
+          }
+        }
+
+    })
+
+
+</script>
+</html>

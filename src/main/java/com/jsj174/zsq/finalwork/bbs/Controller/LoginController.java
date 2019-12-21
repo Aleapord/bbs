@@ -6,6 +6,7 @@ import com.jsj174.zsq.finalwork.bbs.Models.User;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.TokenService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
+import com.sun.xml.internal.ws.server.ServerRtException;
 import javafx.geometry.Pos;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,9 +48,31 @@ public class LoginController {
 
         return "page-signup";
     }
+    @PostMapping("/sign-up")
+    @ResponseBody
+    public HashMap<String,Object> signUp(User user){
+        User user1=null;
+        HashMap<String,Object> hashMap=new HashMap<>();
+        String msg="";
+        user1 = userService.getUser(user.getUsername());
+        if(user1==null){
+            userService.insertUser(user);
+            msg="注册成功！";
+            hashMap.put("status",1);
+        }else {
+            msg="用户已存在！";
+            hashMap.put("status",-1);
+        }
+        User user2=userService.getUser(user.getUsername());
+     hashMap.put("msg",msg);
+     hashMap.put("user",user2);
+        return hashMap;
+    }
+
+
     @PostMapping("/login")
     @ResponseBody
-    public Object login(User user) throws JSONException {
+    public Object login(User user){
         HashMap<String,Object> hashMap=new HashMap<>();
         User userForBase=userService.getUser(user.getUsername());
         if(userForBase==null){
@@ -61,6 +84,7 @@ public class LoginController {
                 return hashMap;
             }else {
                 String token = tokenService.getToken(userForBase);
+                hashMap.put("message",1);
                 hashMap.put("token", token);
                 hashMap.put("user", userForBase);
                 return hashMap;
