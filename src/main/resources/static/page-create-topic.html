@@ -9,13 +9,14 @@
     <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"  href="css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="fonts/icomoon/stylesheet.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 </head>
 <body>
 <!-- tt-mobile menu -->
@@ -112,9 +113,6 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="search-results">
-                            <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch">高级搜索</button>
-                        </div>
                     </form>
                 </div>
                 <!-- /tt-search -->
@@ -141,11 +139,11 @@
             <h1 class="tt-title-border">
                 发布一个帖子
             </h1>
-            <form class="form-default form-create-topic" id="app" @onsubmit="">
+            <form class="form-default form-create-topic" id="app" onsubmit="postForum()">
                 <div class="form-group">
-                    <label for="inputTopicTitle">帖子标题</label>
+                    <label for="forumTitle">帖子标题</label>
                     <div class="tt-value-wrapper">
-                        <input v-model="title" type="text" name="title" class="form-control" id="inputTopicTitle" placeholder="标题" required>
+                        <input v-model="title" type="text" class="form-control" id="forumTitle" placeholder="标题" required>
                         <span class="tt-value-input">99</span>
                     </div>
                     <div class="tt-note">简要概括一下你的帖子内容.</div>
@@ -154,61 +152,58 @@
                     <label>帖子类型</label>
                     <div class="tt-js-active-btn tt-wrapper-btnicon">
                         <div class="row tt-w410-col-02">
-                            <input v-model="type" type="hidden" name="type" id="forumType">
+                            <input v-model="type" type="hidden" id="forumType" value="普通">
                             <div class="col-4 col-lg-3 col-xl-2">
-                                <a @click="console.log(type = 'general')" onclick="setTypeValue('general')" style="cursor: pointer" class="tt-button-icon active">
+                                <span id="general" onclick="focusIt(this)" style="cursor: pointer" class="tt-button-icon">
                                     <span class="tt-icon">
                                         <svg>
                                             <use xlink:href="#icon-discussion"></use>
                                         </svg>
                                     </span>
-                                    <span class="tt-text">General Forum</span>
-                                </a>
+                                    <span class="tt-text" style="font-weight: lighter">普通帖</span>
+                                </span>
                             </div>
                             <div class="col-4 col-lg-3 col-xl-2">
-                                <a @click="console.log(type = 'general')" onclick="setTypeValue('question')" style="cursor: pointer" class="tt-button-icon">
+                                <span id="question" onclick="focusIt(this)" style="cursor: pointer" class="tt-button-icon">
                                     <span class="tt-icon">
                                          <svg>
                                             <use xlink:href="#Question"></use>
                                         </svg>
                                     </span>
-                                    <span class="tt-text">Question</span>
-                                </a>
+                                    <span class="tt-text" style="font-weight: lighter">悬赏帖</span>
+                                </span>
                             </div>
-
                         </div>
                     </div>
                 </div>
-                <div id="rewardDiv" class="form-group" style="display: none">
-                    <label for="inputQuestionCoin">设置悬赏币</label>
-                    <input v-model="questionCoin" type="number" min="1" max="40" name="questionCoin" class="form-control" id="inputQuestionCoin" placeholder="输入悬赏币">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div id="rewardDiv" class="form-group" style="display: none">
+                            <label for="questionCoin">设置悬赏币</label>
+                            <input v-model="questionCoin" type="number" min="1" max="40" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
+                        </div>
+                    </div>
                 </div>
-                <div class="pt-editor" style="padding-top: 0">
+                <div class="pt-editor" style="padding-top: 0;padding-bottom: 30px">
                     <h6 class="pt-title">内容</h6>
                     <div class="form-group">
-                        <textarea v-model="contents" name="message" class="form-control" rows="5" placeholder="开始输入内容..."></textarea>
+                        <textarea v-model="contents" id="forumContents" class="form-control" rows="5" placeholder="开始输入内容..." required></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="inputTopicTitle">所属板块</label>
-                                <select class="form-control" v-model="block">
+                                <label>所属板块</label>
+                                <select class="form-control" id="forumSection" v-model="section" required>
                                     <option value="Select">Select</option>
                                     <option value="Value 01">Value 01</option>
                                     <option value="Value 02">Value 02</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="inputTopicTags">标签</label>
-                                <input type="text" name="tags" class="form-control" id="inputTopicTags" placeholder="使用逗号分隔标签">
-                            </div>
-                        </div>
                     </div>
                      <div class="row">
                         <div class="col-auto ml-md-auto">
-                            <input type="submit" class="btn btn-secondary btn-width-lg">发布</input>
+                            <input type="submit" class="btn btn-secondary btn-width-lg" value="发布">
                         </div>
                     </div>
                 </div>
@@ -240,12 +235,20 @@
             <input type="text" name="name" class="form-control" id="settingsUserName" required placeholder="Jax Bob">
         </div>
         <div class="form-group">
-            <label for="settingsUserEmail">电子邮箱</label>
-            <input type="email" name="email" class="form-control" id="settingsUserEmail" required placeholder="Sample@sample.com">
+            <label>性别</label>
+            <table style="margin: 0 auto">
+                <tr>
+                    <td><input type="radio" name="gender" value="男" style="width: 25px;height: 25px" required></td>
+                    <td width="40" align="center">男</td>
+                    <td width="40"></td>
+                    <td><input type="radio" name="gender" value="女" style="width: 25px;height: 25px"></td>
+                    <td width="40" align="center">女</td>
+                </tr>
+            </table>
         </div>
         <div class="form-group">
-            <label for="settingsUserPassword">密码</label>
-            <input type="password" name="password" class="form-control" id="settingsUserPassword" required placeholder="************">
+            <label for="settingsUserTelphone">电话</label>
+            <input type="tel" name="telphone" pattern="^[0-9][0-9-]{2,}$" class="form-control" id="settingsUserTelphone" required>
         </div>
         <div class="form-group">
             <label for="settingsUserAbout">介绍</label>
@@ -264,86 +267,42 @@
     </span>
 </a>
 
+<!-- 帖子搜索弹出框 -->
 <div class="modal fade" id="modalAdvancedSearch" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="tt-modal-advancedSearch">
-				<div class="tt-modal-title">
-					<i class="pt-icon">
-						<svg>
-							<use xlink:href="#icon-advanced_search"></use>
-						</svg>
-					</i>
-					高级搜索
-					<a class="pt-close-modal" href="#" data-dismiss="modal">
-						<svg class="icon">
-							<use xlink:href="#icon-cancel"></use>
-						</svg>
-					</a>
-				</div>
-				<form class="form-default">
-					<div class="form-group">
-						<i class="pt-customInputIcon">
-                           <svg class="tt-icon">
-                              <use xlink:href="#icon-search"></use>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="tt-modal-advancedSearch">
+                <div class="tt-modal-title">
+                    <i class="pt-icon">
+                        <svg>
+                            <use xlink:href="#icon-advanced_search"></use>
+                        </svg>
+                    </i>
+                    帖子搜索
+                    <a class="pt-close-modal" href="#" data-dismiss="modal">
+                        <svg class="icon">
+                            <use xlink:href="#icon-cancel"></use>
+                        </svg>
+                    </a>
+                </div>
+                <form class="form-default">
+                    <div class="form-group">
+                        <i class="pt-customInputIcon">
+                            <svg class="tt-icon">
+                                <use xlink:href="#icon-search"></use>
                             </svg>
                         </i>
-						<input type="text" name="name" class="form-control pt-customInputSearch" id="searchForum" placeholder="搜索所有帖子">
-					</div>
-					<div class="form-group">
-						<label for="searchName">发帖人：</label>
-						<input type="text" name="name" class="form-control" id="searchName" placeholder="输入发帖人姓名">
-					</div>
-					<div class="form-group">
-						<label for="searchCategory">所在版块：</label>
-						<input type="text" name="name" class="form-control" id="searchCategory" placeholder="输入版块">
-					</div>
-					<div class="checkbox-group">
-				        <input type="checkbox" id="searcCheckBox01" name="checkbox">
-				        <label for="searcCheckBox01">
-				            <span class="check"></span>
-				            <span class="box"></span>
-				            <span class="tt-text">包含所有标签</span>
-				        </label>
-				    </div>
-					<div class="form-group">
-						<label for="searchAdvTime">发表于</label>
-						<div class="row">
-							<div class="col-6">
-								<select class="form-control">
-									<option>任意</option>
-									<option>一天内</option>
-									<option>一周内</option>
-								</select>
-							</div>
-							<div class="col-6">
-								<input type="text" name="name" class="form-control" id="searchAdvTime" placeholder="dd-mm-yyyy">
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="minPostCount">最小帖子数</label>
-						<select class="form-control" id="minPostCount">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
-							<option selected>10</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<a href="#" class="btn btn-secondary btn-block">搜索</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                        <input type="text" name="name" class="form-control pt-customInputSearch" id="searchForum" placeholder="搜索相关帖子">
+                    </div>
+                    <div class="form-group">
+                        <a href="#" class="btn btn-secondary btn-block">搜索</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 <script src="js/bundle.js"></script>
 <svg width="0" height="0" class="hidden">
 	 <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
@@ -456,14 +415,26 @@
 </body>
 <script type="text/javascript">
     /* 设置帖子类型 */
-    function setTypeValue(type) {
-        if(type === 'question') {
-            $('#rewardDiv').show();
+    function focusIt(it) {
+        $("#general").removeClass("active");
+        $("#question").removeClass("active");
+        it.classList.add("active");
+        if(it.id === 'question') {
+            $("#forumType").val("悬赏");
+            $("#rewardDiv").show();
+            $("#inputQuestionCoin").attr("required","");
         }else {
-            $('#rewardDiv').hide().children('input').get(0).value = '';
+            $("#forumType").val("普通");
+            $("#rewardDiv").hide();
+            $("#inputQuestionCoin").removeAttr("required");
         }
-        $("#forumType").val(type);
     }
+
+    function postForum() {
+        vue.submit();
+        return false;
+    }
+
     var vue = new Vue({
         el:"#app",
         data:{
@@ -471,15 +442,14 @@
             type:"",
             questionCoin: "",
             contents: "",
-            block: ""
+            section: ""
         },
         methods:{
-
             submit:function () {
-                alert(this.title+this.type+this.questionCoin+this.contents);
+                if($("#forumTitle").get(0).checkValidity() && $("#forumType").get(0).checkValidity() && $("#forumContents").get(0).checkValidity() && $("#forumSection").get(0).checkValidity())
+                    alert("sdjfl");
             }
         }
-
     });
 </script>
 </html>
