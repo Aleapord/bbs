@@ -17,12 +17,12 @@ public class UserService {
         userMapper.insertUser(user);
     }
 
-    public User getUser(int id) {
-        return userMapper.getUserById(id);
+    public User getUser(int userID) {
+        return userMapper.getUserById(userID);
     }
 
-    public User getUser(String name) {
-        return userMapper.getUserByName(name);
+    public User getUser(String username) {
+        return userMapper.getUserByName(username);
     }
 
     public List<User> getAllUser() {
