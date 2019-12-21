@@ -1,0 +1,18 @@
+@font-face {
+	font-family: 'icon-moon';
+	src: url('icomoon.eot?emspmi');
+	src: url('icomoon.eot?emspmi#iefix') format('embedded-opentype'),
+		url('icomoon.woff?emspmi') format('woff'),
+		url('icomoon.ttf?emspmi') format('truetype'),
+		url('icomoon.svg?emspmi#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+.icon-moon {
+	font-family: icon-moon;
+	user-select: none;
+}
+
+/* 使用字体时，可用 '&#x' + code + ';' 来实现显示（如&#xf12a;）,对应的code请见参考资料 */
