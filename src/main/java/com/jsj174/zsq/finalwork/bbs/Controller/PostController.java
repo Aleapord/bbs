@@ -1,6 +1,8 @@
 package com.jsj174.zsq.finalwork.bbs.Controller;
 
+import com.jsj174.zsq.finalwork.bbs.Models.Comment;
 import com.jsj174.zsq.finalwork.bbs.Models.Post;
+import com.jsj174.zsq.finalwork.bbs.Services.CommentService;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,9 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CommentService commentService;
+
 
     @GetMapping("/")
     @ResponseBody
@@ -24,16 +29,17 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public String singlePost(){
-        return "page-single-topic";
-    }
-    @PostMapping("/{postId}")
     @ResponseBody
     public Post getPost(@PathVariable("postId") int postId){
 
        return postService.getPost(postId);
     }
 
+    @GetMapping("/getComments/{postID}")
+    @ResponseBody
+    public List<Comment> getComments(@PathVariable int postID){
+        return commentService.getComments(postID);
+    }
 
     @PostMapping("/addpost")
     @ResponseBody
@@ -43,4 +49,13 @@ public class PostController {
         hashMap.put("msg","插入成功");
         return hashMap;
     }
+    @PostMapping("/addComment")
+    @ResponseBody
+    public HashMap<String,Object> addComment(Comment comment){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        commentService.addComment(comment);
+        hashMap.put("msg","插入成功");
+        return hashMap;
+    }
+
 }

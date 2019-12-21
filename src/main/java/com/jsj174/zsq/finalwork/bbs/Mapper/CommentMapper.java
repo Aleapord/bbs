@@ -5,6 +5,8 @@ import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Mapper
 @Component
 public interface CommentMapper {
@@ -18,4 +20,7 @@ public interface CommentMapper {
 
     @Delete("delete from comment where commentID=#{commentID}")
     void deleteComment(@Param("commentID") int commentID);
+
+    @Select("select * from comment where postID = #{postID}")
+    List<Comment> getComments(@Param("postID") int postID);
 }

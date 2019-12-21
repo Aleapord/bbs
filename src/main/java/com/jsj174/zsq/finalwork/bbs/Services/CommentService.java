@@ -6,6 +6,8 @@ import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentService {
 
@@ -22,5 +24,8 @@ public class CommentService {
 
     public void deleteComment(int commentID) {
         commentMapper.deleteComment(commentID);
+    }
+    public List<Comment> getComments(int postID){
+        return commentMapper.getComments(postID);
     }
 }
