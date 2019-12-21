@@ -10,13 +10,13 @@ public class User implements Serializable {
     private String address;
     private String job;
     private int wealth;
-    private int telephone;
+    private String telephone;
     private String introduction;
 
     public User() {
     }
 
-    public User(int userID, String username, String password, String gender, String address, String job, int wealth, int telephone, String introduction) {
+    public User(int userID, String username, String password, String gender, String address, String job, int wealth, String telephone, String introduction) {
         this.userID = userID;
         this.username = username;
         this.password = password;
@@ -84,11 +84,11 @@ public class User implements Serializable {
         this.wealth = wealth;
     }
 
-    public int getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(int telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
@@ -98,5 +98,20 @@ public class User implements Serializable {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID=" + userID +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", address='" + address + '\'' +
+                ", job='" + job + '\'' +
+                ", wealth=" + wealth +
+                ", telephone=" + telephone +
+                ", introduction='" + introduction + '\'' +
+                '}';
     }
 }
