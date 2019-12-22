@@ -54,34 +54,13 @@
                 <div class="tt-desktop-menu">
                     <nav>
                         <ul>
-                            <li><a href="page-tabs.html"><span>关于</span></a></li>
                             <li><a href="page-categories.html"><span>版块</span></a></li>
-                            <li><a href="page-questions.html"><span>问答</span></a></li>
                             <li><a href="page-create-topic.html"><span>发帖子</span></a></li>
                             <li>
                                 <a href="page-single-user.html"><span>个人中心</span></a>
                                 <ul>
                                     <li><a href="index.html">首页</a></li>
-                                    <li><a href="page-single-topic.html">Single Topic</a></li>
-                                    <li><a href="page-create-topic.html">Create Topic</a></li>
-                                    <li><a href="page-single-user.html">Single User Activity</a></li>
-                                    <li><a href="page-single_threads.html">Single User Threads</a></li>
-                                    <li><a href="page-single_replies.html">Single User Replies</a></li>
-                                    <li><a href="page-single_followers.html">Single User Followers</a></li>
-                                    <li><a href="page-single_categories.html">Single User Categories</a></li>
-                                    <li><a href="page-single_settings.html">Single User Settings</a></li>
-                                    <li><a href="page-signup.html">Sign up</a></li>
-                                    <li><a href="page-login.html">Log in</a></li>
-                                    <li><a href="page-categories.html">Categories</a></li>
-                                    <li><a href="page-categories-single.html">Single Category</a></li>
-                                    <li><a href="page-tabs.html">About</a></li>
-                                    <li><a href="page-tabs_guidelines.html">Guidelines</a></li>
-                                    <li><a href="_demo_modal-advancedSearch.html">Advanced Search</a></li>
-                                    <li><a href="error404.html">Error 404</a></li>
-                                    <li><a href="_demo_modal-age-confirmation.html">Age Verification</a></li>
-                                    <li><a href="_demo_modal-level-up.html">Level up Notification</a></li>
-                                    <li><a href="messages-page.html">Message</a></li>
-                                    <li><a href="messages-compose.html">Message Compose</a></li>
+                                    <li><a href="#">退出登录</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -194,7 +173,7 @@
                     <div class="col-md-4">
                         <div id="rewardDiv" class="form-group" style="display: none">
                             <label for="questionCoin">设置悬赏币</label>
-                            <input v-model="questionCoin" type="number" v-bind:min="checkForMin(coins)" v-bind:max="getCoins(coins)" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
+                            <input v-model="questionCoin" type="number" v-bind:min="(coins >= 1 ? 1 : 0)" v-bind:max="coins + ''" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
                         </div>
                     </div>
                 </div>
@@ -209,7 +188,7 @@
                                 <label>所属版块</label>
                                 <select class="form-control" id="forumSection" v-model="section" required>
                                     <template v-for="bk in bks">
-                                        <option v-bind:value="getSection(bk)">{{bk.substr(2,bk.length - 2)}}</option>
+                                        <option v-bind:value="bk">{{bk.substr(2,bk.length - 2)}}</option>
                                     </template>
                                 </select>
                             </div>
@@ -469,7 +448,7 @@
                 if(vue_PostForum.$data.type === '悬赏') {
                     var min = questionCoin.getAttribute("min");
                     var max = questionCoin.getAttribute("max");
-                    if(questionCoin.value <= max && questionCoin.value >= min) {
+                    if(parseInt(questionCoin.value) <= max && parseInt(questionCoin.value) >= min) {
                         if(forumContents.value.length !== 0) {
                             if(forumSection.value.length === 0)
                                 str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>版块不能为空！</td></tr>";
@@ -541,7 +520,7 @@
             contents: "",
             coins: 0,
             section: "",
-            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08C++","09动漫","10文学","11游戏"]
+            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08C++","09动漫","10文学","11游戏","12情感"]
         },
         methods:{
             getWealth() {
@@ -568,7 +547,7 @@
                     userID: vue_User.$data.userID,
                     username: vue_User.$data.username,
                     title: this.title,
-                    point: parseInt(this.questionCoin == null ? "0" : this.questionCoin),
+                    point: parseInt(this.questionCoin == null ? "0" : this.questionCoin) + 1,
                     section: this.section,
                     content: this.contents,
                     time: new Date().format("yyyy-MM-dd hh:mm:ss")},{emulateJSON:true}).then(function(value) {
