@@ -539,19 +539,27 @@
             type:"",
             questionCoin: null,
             contents: "",
-            coins: sessionStorage.getItem("coins") !== null ? sessionStorage.getItem("coins") : 0,
+            coins: 0,
             section: "",
-            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08游戏"]
+            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08C++","09动漫","10文学","11游戏"]
         },
         methods:{
-            getCoins(coins) {
-                return coins;
-            },
-            getSection(section) {
-                return section;
-            },
-            checkForMin(coins) {
-                return coins >= 1 ? 1 : 0;
+            getWealth() {
+                if(vue_User.$data.hasToken === "") {            // 该用户未登录！
+                    this.coins = 0;
+                }else {
+                    this.$http.post("/user/getWealth",{userID:vue_User.$data.userID},{emulateJSON:true}).then(function(value) {
+                        if(value.body.msg !== null) {
+                            this.coins = value.body.wealth;
+                        }else {
+                            $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: red'>&#xeaf6;</td><td>该用户不存在！</td></tr>");
+                            popMessage();
+                        }
+                    },function(reason) {
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
+                        popMessage();
+                    });
+                }
             },
             submit:function () {
                 if(this.type === '普通')
@@ -571,7 +579,7 @@
                             vue_PostForum.$data.questionCoin + "</td></tr>");
                     }
                     popMessage();
-                    setTimeout(function() {location.reload()},500);
+                    setTimeout(function() {location.reload()},1000);
                 },function(reason) {
                     $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
                     popMessage();
@@ -583,5 +591,6 @@
     function popMessage() {
         $("#tipsModal").modal('show');
     }
+    vue_PostForum.getWealth();
 </script>
 </html>

@@ -3,9 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>Forum - Responsive HTML5 Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Forum - Responsive HTML5 Template">
-    <meta name="author" content="Forum">
     <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,18 +24,18 @@
     </ul>
     <div class="mm-navbtn-names">
         <div class="mm-closebtn">
-            Close
+            关闭导航
             <div class="tt-icon">
                 <svg>
                     <use xlink:href="#icon-cancel"></use>
                 </svg>
             </div>
         </div>
-        <div class="mm-backbtn">Back</div>
+        <div class="mm-backbtn">返回</div>
     </div>
 </nav>
 <header id="tt-header">
-    <div class="container" id="header_User">
+    <div class="container">
         <div class="row tt-row no-gutters">
             <div class="col-auto">
                 <!-- toggle mobile menu -->
@@ -119,31 +116,34 @@
                 <!-- /tt-search -->
             </div>
 
-            <!-- 如果有token,表示登录了账号 -->
-            <template v-if="hasToken!==''">
-                <div class="col-auto ml-auto">
-                    <div class="tt-user-info d-flex justify-content-center">
-                        <a id="js-settings-btn" class="tt-btn-icon">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
-                        </a>
-                        <div class="tt-avatar-icon tt-size-md">
-                            <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(username)"></use></svg></i>
+            <div class="col-auto ml-auto" id="header_User">
+                <!-- 如果有token,表示登录了账号 -->
+                <template v-if="hasToken!==''">
+                    <div class="col-auto ml-auto">
+                        <div class="tt-user-info d-flex justify-content-center">
+                            <a id="js-settings-btn" class="tt-btn-icon">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
+                            </a>
+                            <div class="tt-avatar-icon tt-size-md">
+                                <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture()"></use></svg></i>
+                            </div>
+                            <a href="page-single-user.html" class="tt-btn-icon">
+                                <span>{{username}}</span>
+                            </a>
                         </div>
-                        <a href="page-single-user.html" class="tt-btn-icon">
-                            <span>{{username}}</span>
-                        </a>
                     </div>
-                </div>
-            </template>
-            <!-- 否则就没有登录账号 -->
-            <template v-else>
-                <div class="col-auto ml-auto">
-                    <div class="tt-account-btn">
-                        <a href="/login" class="btn btn-primary">登录</a>
-                        <a href="/sign-up" class="btn btn-secondary">注册</a>
+                </template>
+                <!-- 否则就没有登录账号 -->
+                <template v-else>
+                    <div class="col-auto ml-auto">
+                        <div class="tt-account-btn">
+                            <a href="/login" class="btn btn-primary">登录</a>
+                            <a href="/sign-up" class="btn btn-secondary">注册</a>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </div>
+
         </div>
     </div>
 </header>
@@ -465,17 +465,26 @@
 
         var str = "";
         if(forumTitle.checkValidity()) {
-            if(forumContents.checkValidity()) {
+            if(forumType.value.length > 0) {
                 if(vue_PostForum.$data.type === '悬赏') {
-                    if(questionCoin.checkValidity()) {
-                        if(forumSection.checkValidity()) {
-                            if(!forumContents.checkValidity())
-                                str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>帖子内容不能为空！</td></tr>";
+                    var min = questionCoin.getAttribute("min");
+                    var max = questionCoin.getAttribute("max");
+                    if(questionCoin.value <= max && questionCoin.value >= min) {
+                        if(forumContents.value.length !== 0) {
+                            if(forumSection.value.length === 0)
+                                str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>版块不能为空！</td></tr>";
                         }else {
-                            str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>版块不能为空！</td></tr>";
+                            str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>帖子内容不能为空！</td></tr>";
                         }
                     }else {
                         str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>请检查悬赏币是否正确！</td></tr>";
+                    }
+                }else {
+                    if(forumContents.value.length !== 0) {
+                        if(forumSection.value.length === 0)
+                            str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>版块不能为空！</td></tr>";
+                    }else {
+                        str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>帖子内容不能为空！</td></tr>";
                     }
                 }
             }else {
@@ -499,11 +508,11 @@
         $("#question").removeClass("active");
         it.classList.add("active");
         if(it.id === 'question') {
-            $("#forumType").val("悬赏");
+            vue_PostForum.$data.type = "悬赏";
             $("#rewardDiv").show();
             $("#inputQuestionCoin").attr("required","");
         }else {
-            $("#forumType").val("普通");
+            vue_PostForum.$data.type = "普通";
             $("#rewardDiv").hide();
             $("#inputQuestionCoin").removeAttr("required");
         }
@@ -512,13 +521,13 @@
     var vue_User = new Vue({
         el: "#header_User",
         data: {
-            hasToken: sessionStorage.getItem("token") !== null ? "hasLogined" : "",
+            hasToken: sessionStorage.getItem("token") !== null ? sessionStorage.getItem("token") : "",
             username: sessionStorage.getItem("username"),
             userID: sessionStorage.getItem("userID")
         },
         methods: {
-            name_picture: function(name) {
-                return "#icon-ava-" + name.substr(0,1).toLowerCase();
+            name_picture: function() {
+                return "#icon-ava-" + this.username.substr(0,1).toLowerCase();
             }
         }
     });
@@ -530,9 +539,9 @@
             type:"",
             questionCoin: null,
             contents: "",
-            coins: sessionStorage.getItem("coins") !== null ? sessionStorage.getItem("coins") : 0,
+            coins: 0,
             section: "",
-            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐"]
+            bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08C++","09动漫","10文学","11游戏"]
         },
         methods:{
             getCoins(coins) {
@@ -543,6 +552,23 @@
             },
             checkForMin(coins) {
                 return coins >= 1 ? 1 : 0;
+            },
+            getWealth() {
+                if(vue_User.$data.hasToken === "") {            // 该用户未登录！
+                    this.coins = 0;
+                }else {
+                    this.$http.post("/user/getWealth",{userID:vue_User.$data.userID},{emulateJSON:true}).then(function(value) {
+                        if(value.body.msg !== null) {
+                            this.coins = value.body.wealth;
+                        }else {
+                            $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: red'>&#xeaf6;</td><td>该用户不存在！</td></tr>");
+                            popMessage();
+                        }
+                    },function(reason) {
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
+                        popMessage();
+                    });
+                }
             },
             submit:function () {
                 if(this.type === '普通')
@@ -555,10 +581,16 @@
                     section: this.section,
                     content: this.contents,
                     time: new Date().format("yyyy-MM-dd hh:mm:ss")},{emulateJSON:true}).then(function(value) {
-                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！</td></tr>");
+                    if(vue_PostForum.$data.questionCoin === 0) {
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！财富 +10</td></tr>");
+                    }else {
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>悬赏发布成功！财富 -" +
+                            vue_PostForum.$data.questionCoin + "</td></tr>");
+                    }
                     popMessage();
+                    setTimeout(function() {location.reload()},500);
                 },function(reason) {
-                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
+                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
                     popMessage();
                 });
             }
@@ -568,5 +600,6 @@
     function popMessage() {
         $("#tipsModal").modal('show');
     }
+    vue_PostForum.getWealth();
 </script>
 </html>

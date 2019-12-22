@@ -5,8 +5,6 @@ import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import com.jsj174.zsq.finalwork.bbs.Services.CommentService;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
-import com.sun.xml.internal.ws.server.ServerRtException;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -103,4 +101,16 @@ public class PostController {
         return postService.getSectionPost(section);
     }
 
+
+    @PostMapping("/setAnswer")
+    @ResponseBody
+    public HashMap<String, Object> setAnswer(int commentID,int point,int postID, int userID) {
+        System.out.println(postID + ":" + commentID);
+
+        commentService.updateAnswer(commentID);
+        postService.updatePoint(1,postID);
+
+        userService.updateWealth(point,userID);
+        return new HashMap<>();
+    }
 }

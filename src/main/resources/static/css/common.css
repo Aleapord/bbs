@@ -1,0 +1,30 @@
+/* 让文字（长单词、url）可以自动换行 */
+.wrapWord {
+    word-wrap: break-word;
+}
+
+/* 让一个元素在放到上面的时候字体变颜色 */
+.hand_Link01 {
+    color: black;
+    cursor: pointer;
+}
+.hand_Link01:hover {
+    color: #2e80d8;
+}
+
+.hand_Link02 {
+    color: #787878;
+    cursor: pointer;
+}
+.hand_Link02:hover {
+    color: #000000;
+}
+
+.bt_Yes {
+    background-color: #3e8f3e;
+    color: black;
+}
+.bt_Yes:hover {
+    background-color: #78c578;
+    color: white;
+}
