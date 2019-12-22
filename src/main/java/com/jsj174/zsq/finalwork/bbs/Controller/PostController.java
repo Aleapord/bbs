@@ -5,6 +5,8 @@ import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import com.jsj174.zsq.finalwork.bbs.Services.CommentService;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
+import com.sun.xml.internal.ws.server.ServerRtException;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -87,4 +89,18 @@ public class PostController {
         hashMap.put("msg", "阅读数加1");
         return hashMap;
     }
+    @PostMapping("/getPostNum")
+    @ResponseBody
+    public String getPostNum(String section){
+        System.out.println(section);
+        List<Post> posts = postService.getSectionPost(section);
+        return posts.size()+"";
+    }
+    @PostMapping("/getSectionPost")
+    @ResponseBody
+    public List<Post> getSectionPost(String section){
+
+        return postService.getSectionPost(section);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.jsj174.zsq.finalwork.bbs.Services;
 
 import com.jsj174.zsq.finalwork.bbs.Mapper.PostMapper;
 import com.jsj174.zsq.finalwork.bbs.Models.Post;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +64,9 @@ public class PostService {
 
     public void deletePost(int postID) {
         postMapper.deletePost(postID);
+    }
+
+    public List<Post> getSectionPost(String section) {
+        return postMapper.getSectionPost(section);
     }
 }

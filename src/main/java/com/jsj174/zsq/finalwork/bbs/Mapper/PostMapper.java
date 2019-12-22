@@ -49,4 +49,7 @@ public interface PostMapper {
 
     @Delete("delete from post where postID = #{postID}")
     void deletePost(@Param("postID") int postID);
+
+    @Select("select * from post where section = #{section}")
+    List<Post> getSectionPost(@Param("section") String section);
 }
