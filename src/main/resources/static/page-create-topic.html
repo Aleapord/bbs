@@ -173,7 +173,7 @@
                     <div class="col-md-4">
                         <div id="rewardDiv" class="form-group" style="display: none">
                             <label for="questionCoin">设置悬赏币</label>
-                            <input v-model="questionCoin" type="number" v-bind:min="(coins >= 1 ? 1 : 0)" v-bind:max="coins + ''" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
+                            <input v-model="questionCoin" type="number" v-bind:placeholder="'您的财富是：$' + coins" v-bind:min="(coins >= 1 ? 1 : 0)" v-bind:max="coins + ''" name="questionCoin" class="form-control" id="questionCoin">
                         </div>
                     </div>
                 </div>
@@ -541,17 +541,20 @@
                 }
             },
             submit:function () {
-                if(this.type === '普通')
-                    this.questionCoin = 0;
+                if(this.type === '普通') {
+                    this.questionCoin = "0";
+                }else {
+                    this.questionCoin = (parseInt(this.questionCoin == null ? "0" : this.questionCoin) + 1) + "";
+                }
                 this.$http.post("/post/addpost",{
                     userID: vue_User.$data.userID,
                     username: vue_User.$data.username,
                     title: this.title,
-                    point: parseInt(this.questionCoin == null ? "0" : this.questionCoin) + 1,
+                    point: parseInt(this.questionCoin),
                     section: this.section,
                     content: this.contents,
                     time: new Date().format("yyyy-MM-dd hh:mm:ss")},{emulateJSON:true}).then(function(value) {
-                    if(vue_PostForum.$data.questionCoin === 0) {
+                    if(vue_PostForum.$data.questionCoin === "0") {
                         $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！财富 +10</td></tr>");
                     }else {
                         $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>悬赏发布成功！财富 -" +
