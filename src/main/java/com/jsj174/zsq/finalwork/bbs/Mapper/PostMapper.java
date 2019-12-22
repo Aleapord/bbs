@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public interface PostMapper {
 
-    @Select("select * from post order by top")
+    @Select("select * from post order by top desc")
     List<Post> getAllPost();
 
     @Select("select * from post where userID = #{userID}")

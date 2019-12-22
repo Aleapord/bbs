@@ -3,9 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>Forum - Responsive HTML5 Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Forum - Responsive HTML5 Template">
-    <meta name="author" content="Forum">
     <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -567,7 +564,12 @@
                     section: this.section,
                     content: this.contents,
                     time: new Date().format("yyyy-MM-dd hh:mm:ss")},{emulateJSON:true}).then(function(value) {
-                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！</td></tr>");
+                    if(vue_PostForum.$data.questionCoin === 0) {
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！财富 +10</td></tr>");
+                    }else {
+                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>悬赏发布成功！财富 -" +
+                            vue_PostForum.$data.questionCoin + "</td></tr>");
+                    }
                     popMessage();
                     setTimeout(function() {location.reload()},500);
                 },function(reason) {

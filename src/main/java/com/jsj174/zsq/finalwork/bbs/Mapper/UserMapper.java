@@ -37,6 +37,6 @@ public interface UserMapper {
     @Select("select wealth from user where userID=#{userID}")
     int getWealth(@Param("userID") int userID);
 
-    @Update("update user set wealth=#{wealth} where userID=#{userID")
+    @Update("update user set wealth=#{wealth} where userID=#{userID}")
     void updateWealth(@Param("wealth") int wealth, @Param("userID") int userID);
 }

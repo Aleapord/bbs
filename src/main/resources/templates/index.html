@@ -14,6 +14,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="js/tools.js"></script>
 </head>
 <body id="body">
 <!-- tt-mobile menu -->
@@ -159,7 +160,18 @@
             </div>
 
             <template v-if="posts==null">
-                <div class="tt-row-btn"><span style="font-size: 36px;cursor: default">加载失败！！！</span></div>
+                <div class="tt-layout-404">
+                    <span class="tt-icon">
+                        <svg class="icon">
+                        <use xlink:href="#icon-error_404"></use>
+                    </svg>
+                    </span>
+                    <h6 class="tt-title">哦豁???</h6>
+                    <p style="margin: 0">现在还没有人发过帖子呢！</p>
+                    <div class="form-group">
+                        <a href="/page-create-topic.html" class="btn btn-secondary btn-block">去发帖子</a>
+                    </div>
+                </div>
             </template>
             <template v-else>
                 <template v-for="post in posts">
@@ -170,7 +182,7 @@
                             </svg>
                         </div>
                         <div class="tt-col-description">
-                            <h6 class="tt-title"><a @click="sessionStorage.setItem('Detail_postID',post.postID)" href="page-single-topic.html">
+                            <h6 class="tt-title"><a @click="readForum(post.postID)" style="cursor: pointer;user-select: none">
                                 <template v-if="post.top!==0">
                                     <svg class="tt-icon">
                                         <use xlink:href="#icon-pinned"></use>
@@ -195,23 +207,26 @@
                         <div class="tt-col-value  hide-mobile">{{post.views}}</div>
                         <div class="tt-col-value hide-mobile">{{active_post(post.time)}}</div>
                     </div>
-                    <template v-if="getRandomNum()===indexOf(post)">
-                        <!-- 提示你登录和注册 -->
-                        <div id="col-item" class="tt-item tt-item-popup">
-                            <div class="tt-col-message">
-                                貌似您还未登录，登录查看更多有趣的内容！
+                    <template v-if="vue_User.$data.hasToken===''">
+                        <template v-if="getRandomNum()===indexOf(post)">
+                            <!-- 提示你登录和注册 -->
+                            <div id="col-item" class="tt-item tt-item-popup">
+                                <div class="tt-col-message">
+                                    貌似您还未登录，登录查看更多有趣的内容！
+                                </div>
+                                <div class="tt-col-btn">
+                                    <button type="button" class="btn btn-primary">登录</button>
+                                    <button type="button" class="btn btn-secondary">注册</button>
+                                    <button type="button" class="btn-icon" data-dismiss="tt-item">
+                                        <svg class="tt-icon" onclick="$('#col-item').hide()">
+                                            <use xlink:href="#icon-cancel"></use>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="tt-col-btn">
-                                <button type="button" class="btn btn-primary">登录</button>
-                                <button type="button" class="btn btn-secondary">注册</button>
-                                <button type="button" class="btn-icon" data-dismiss="tt-item">
-                                    <svg class="tt-icon" onclick="$('#col-item').hide()">
-                                        <use xlink:href="#icon-cancel"></use>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+                        </template>
                     </template>
+
                 </template>
             </template>
 
@@ -562,9 +577,19 @@
                 },function (reason) {
                     console.log("加载异常！")
                 })
+            },
+            // 查看一个帖子
+            readForum: function(postID) {
+                sessionStorage.setItem('Detail_postID',postID);
+                var url = "/post/addView/" + postID;
+                this.$http.get(url).then(function (value) {
+                    console.log(value.body.msg)
+                },function (reason) {
+                    console.log("阅读数加1失败");
+                });
+                location.href = "page-single-topic.html";
             }
         }
-
     });
     vue.getPostList();
 </script>

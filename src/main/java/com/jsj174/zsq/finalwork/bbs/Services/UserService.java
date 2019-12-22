@@ -58,8 +58,8 @@ public class UserService {
         return userMapper.getWealth(userId);
     }
 
-    public void updateWealth(int userID) {
+    public void updateWealth(int wealth,int userID) {
         int oldWealth = getWealth(userID);
-        userMapper.updateWealth(oldWealth + 10, userID);
+        userMapper.updateWealth(oldWealth + wealth, userID);
     }
 }
