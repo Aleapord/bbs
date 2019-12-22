@@ -29,8 +29,8 @@ public class UserService {
         return userMapper.getAllUser();
     }
 
-    public void deleteUser(User user) {
-        userMapper.deleteUser(user.getUserID());
+    public void deleteUser(int userID) {
+        userMapper.deleteUser(userID);
     }
 
     public void updateUser(User user) {

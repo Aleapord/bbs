@@ -80,5 +80,19 @@ public class AdminController {
         hashMap.put("msg",msg);
         return hashMap;
     }
-
+    @GetMapping("/getUserList")
+    @ResponseBody
+    public List<User> getUser(){
+        return userService.getAllUser();
+    }
+    @PostMapping("/deleteUser")
+    @ResponseBody
+    public HashMap<String,Object> deleteUser(int userID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        userService.deleteUser(userID);
+        msg="删除成功";
+        hashMap.put("msg",msg);
+        return hashMap;
+    }
 }
