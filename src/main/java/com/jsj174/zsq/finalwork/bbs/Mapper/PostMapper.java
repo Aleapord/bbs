@@ -29,8 +29,6 @@ public interface PostMapper {
     @Update("update post set section=#{section} where postID=#{postID}")
     void updateSection(@Param("section") String section, @Param("postID") int postID);
 
-    @Update("update post set point=#{point} where postID=#{postID}")
-    void updatePoint(@Param("point") int point, @Param("postID") int postID);
 
     @Update("update post set replies=replies+1 where postID=#{postID}")
     void updateReplies(@Param("postID") int postID);

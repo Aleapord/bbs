@@ -79,9 +79,6 @@ public class PostService {
     public void updateTop(int top, int postID) {
         postMapper.updateTop(top, postID);
     }
-    public void updatePoint(int point, int postID) {
-        postMapper.updatePoint(point, postID);
-    }
 
     public void updateLikes(int postID) {
         postMapper.updateLikes(postID);
