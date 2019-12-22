@@ -8,16 +8,20 @@ public class Comment implements Serializable {
     private String username;
     private int postID;
     private String comment;
+    private int answer;
+    private String time;
 
     public Comment() {
     }
 
-    public Comment(int commentID, int userID, String username, int id, String comment) {
+    public Comment(int commentID, int userID, String username, int postID, String comment, int answer, String time) {
         this.commentID = commentID;
         this.userID = userID;
         this.username = username;
-        this.postID = id;
+        this.postID = postID;
         this.comment = comment;
+        this.answer = answer;
+        this.time = time;
     }
 
     public int getCommentID() {
@@ -60,6 +64,22 @@ public class Comment implements Serializable {
         this.comment = comment;
     }
 
+    public int getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(int answer) {
+        this.answer = answer;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -68,6 +88,8 @@ public class Comment implements Serializable {
                 ", username='" + username + '\'' +
                 ", postID=" + postID +
                 ", comment='" + comment + '\'' +
+                ", answer=" + answer +
+                ", time='" + time + '\'' +
                 '}';
     }
 }

@@ -11,8 +11,8 @@ import java.util.List;
 @Component
 public interface CommentMapper {
 
-    @Insert("insert into comment(userID,username,postID,comment)" +
-            "value(#{comment.userID},#{comment.username},#{comment.postID},#{comment.comment})")
+    @Insert("insert into comment(userID,username,postID,comment,time)" +
+            "value(#{comment.userID},#{comment.username},#{comment.postID},#{comment.comment},#{comment.time})")
     void addComment(@Param("comment") Comment comment);
 
     @Select("select username,comment from comment where postID=#{postID}")
@@ -23,4 +23,7 @@ public interface CommentMapper {
 
     @Select("select * from comment where postID = #{postID}")
     List<Comment> getComments(@Param("postID") int postID);
+
+    @Update("update comment set answer=1")
+    void updateAnswer();
 }

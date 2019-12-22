@@ -18,14 +18,19 @@ public class CommentService {
         commentMapper.addComment(comment);
     }
 
-    public Post getComment(int postID){
+    public Post getComment(int postID) {
         return commentMapper.getComment(postID);
     }
 
     public void deleteComment(int commentID) {
         commentMapper.deleteComment(commentID);
     }
-    public List<Comment> getComments(int postID){
+
+    public List<Comment> getComments(int postID) {
         return commentMapper.getComments(postID);
+    }
+
+    public void updateAnswer(){
+        commentMapper.updateAnswer();
     }
 }
