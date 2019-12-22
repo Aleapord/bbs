@@ -25,7 +25,6 @@ public class LoginController {
     @Autowired
     private RedisTemplate<Object,Object> redisTemplate;
 
-
     @Autowired
     private TokenService tokenService;
 
@@ -41,11 +40,12 @@ public class LoginController {
     public String login(){
         return "page-login";
     }
+
     @GetMapping("/sign-up")
     public String signUp(){
-
         return "page-signup";
     }
+
     @PostMapping("/sign-up")
     @ResponseBody
     public HashMap<String,Object> signUp(User user){
@@ -66,7 +66,6 @@ public class LoginController {
         hashMap.put("user",user2);
         return hashMap;
     }
-
 
     @PostMapping("/login")
     @ResponseBody
@@ -89,13 +88,4 @@ public class LoginController {
             }
         }
     }
-    @GetMapping("/get")
-    @ResponseBody
-    public List<Post> get(){
-
-        System.out.println(postService.getAllPost());
-
-        return postService.getAllPost();
-    }
-
 }
