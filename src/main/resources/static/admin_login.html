@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="../fonts/icomoon/stylesheet.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
+    <style type="text/css">
+        body {
+            background: url("../images/background.png");
+        }
+    </style>
+</head>
+<body>
+    <div id="app" style="position: fixed;top: calc(50% - 150px);left: calc(50% - 250px);width: 500px;box-shadow: 0 0 20px gray;border-radius: 20px;padding: 30px">
+        <form class="form-horizontal">
+            <h3 style="text-align: center">管理员登录</h3>
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label" style="font-size: 17px">账户</label>
+                <div class="col-sm-10">
+                    <input type="text" v-model="name" class="form-control" id="inputName" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="col-sm-2 control-label" style="font-size: 17px">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" v-model="password" class="form-control" id="inputPassword" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox">记住我
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button @click="submitIt()" class="btn btn-default">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="popBox" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <span>asdoajdgoajgoasdkj</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            name: "",
+            password: ""
+        },
+        methods: {
+            submitIt() {
+                if(this.name !== "" && this.password !== "") {
+                    this.$http.post("/admin/login",{name: this.name,password: this.password}).then(function(value) {
+                        if(value.body.status === 1) {
+                            sessionStorage.setItem("name",this.name);
+                            alert("登录成功！！！");
+                            location.href = '/admin/center';
+                        }else {
+                            alert(value.body.msg);
+                        }
+                    },function(reason) {
+                        alert("输入的账号、密码有误！！！");
+                    })
+                }else {
+                    alert("输入的账号、密码有误！！！");
+                }
+            }
+        }
+    });
+</script>
+</html>

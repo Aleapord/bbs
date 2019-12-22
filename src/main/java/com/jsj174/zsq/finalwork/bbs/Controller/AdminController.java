@@ -133,7 +133,7 @@ public class AdminController {
     public HashMap<String,Object> cancleDigest(int postID){
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
-        postService.updateTop(0,postID);
+        postService.updatePoint(0,postID);
         msg="取消加精成功！";
         hashMap.put("msg",msg);
         return hashMap;

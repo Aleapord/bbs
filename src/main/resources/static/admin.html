@@ -10,24 +10,12 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-
-    <style>
-        .post_title {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .post_title:hover {
-            color: #64d1ff;
-            text-decoration: black underline;
-        }
-    </style>
 </head>
 <body>
 
 <h2 style="text-align: center">BBS论坛管理中心</h2>
 
-<div style="margin: 50px auto" id="app">
+<div style="margin: 50px auto;width: 800px;" id="app">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">&emsp;帖子&emsp;</a></li>
@@ -42,57 +30,54 @@
         <div role="tabpanel" class="tab-pane active" id="home">
             <table class="table table-hover">
                 <tr>
-                    <th style="text-align: center">#</th>
-                    <th style="text-align: center">帖子标题</th>
-                    <th style="text-align: center">用户名</th>
-                    <th style="text-align: center">版块</th>
-                    <th style="text-align: center">发帖时间</th>
-                    <th style="text-align: center">悬赏问题</th>
-                    <th style="text-align: center">悬赏币</th>
-                    <th style="text-align: center">置顶</th>
-                    <th style="text-align: center">加精</th>
-                    <th style="text-align: center">操作</th>
+                    <th>#</th>
+                    <th>帖子标题</th>
+                    <th>用户名</th>
+                    <th>版块</th>
+                    <th>发帖时间</th>
+                    <th>悬赏问题</th>
+                    <th>悬赏币</th>
+                    <th>置顶</th>
+                    <th>加精</th>
+                    <th>操作</th>
                 </tr>
 
                 <template v-if="posts==null">
-                    <tr><td colspan="10" style="text-align: center">无帖子记录</td></tr>
+                    <tr><td colspan="10">无帖子记录</td></tr>
                 </template>
                 <template v-else>
                     <template v-for="post in posts">
                         <tr>
-                            <td>{{indexOf(post) + 1}}</td>
-                            <td><span class="post_title">{{post.title}}</span></td>
+                            <td>{{indexOf(post)}}</td>
+                            <td>{{post.title}}</td>
                             <td>{{post.username}}</td>
                             <td>{{post.section.substr(2,post.section.length-2)}}</td>
                             <td>{{post.time}}</td>
                             <template v-if="post.point>0">
                                 <td>是</td>
-                                <td>{{post.point - 1}}</td>
+                                <td>{{post.point}}</td>
                             </template>
                             <template v-else>
                                 <td>否</td>
                                 <td>0</td>
                             </template>
                             <template v-if="post.top>0">
-                                <td><button class="btn btn-block" style="width: 90px" @click="cancelTop(post.postID)">取消置顶</button></td>
+                                <td><button class="btn btn-block">取消置顶</button></td>
                             </template>
                             <template v-else>
-                                <td><button class="btn btn-success" style="width: 90px" @click="toTop(post.postID)">置顶</button></td>
+                                <td><button class="btn btn-success">&emsp;置顶&emsp;</button></td>
                             </template>
                             <template v-if="post.point<0">
-                                <td><button class="btn btn-block" style="width: 90px" @click="cancelDigest(post.postID)">取消加精</button></td>
-                            </template>
-                            <template v-else-if="post.point>0">
-                                <td><button class="btn btn-primary" style="width: 90px">悬赏</button></td>
+                                <td><button class="btn btn-block">取消加精</button></td>
                             </template>
                             <template v-else>
-                                <td><button class="btn btn-success" style="width: 90px" @click="digest(post.postID)">加精</button></td>
+                                <td><button class="btn btn-success">&emsp;加精&emsp;</button></td>
                             </template>
                             <td>
                                 <table style="text-align: center">
                                     <tr>
-                                        <td width="60"><button class="btn btn-warning" @click="">修改</button></td>
-                                        <td width="60"><button class="btn btn-danger" @click="delete(post.postID)">删除</button></td>
+                                        <td width="60px"><input type="button" class="bt btn-warning" value="修改"></td>
+                                        <td width="60px"><input type="button" class="bt btn-danger" value="删除"></td>
                                     </tr>
                                 </table>
                             </td>
@@ -114,7 +99,7 @@
             posts: null,
             username: sessionStorage.getItem("name") == null ? "" : sessionStorage.getItem("name")
         },
-        methods: {
+        method: {
             // 帖子的索引
             indexOf:function(post) {
                 if(this.posts == null)
@@ -124,51 +109,12 @@
                         return i;
                 return -1;
             },
-            getAllPosts:function() {
+            getAllPosts() {
                 this.$http.get("/admin/getpostlist").then(function(value) {
                     this.posts = value.body;
                 },function(reason) {
 
                 });
-            },
-            cancelTop:function(postID) {
-                this.$http.post("/admin/cancelTop",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            toTop:function(postID) {
-                this.$http.post("/admin/top",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            digest:function(postID) {
-                this.$http.post("/admin/digest",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            cancelDigest:function(postID) {
-                this.$http.post("/admin/cancelDigest",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            updatePost(postID) {
-
-            },
-            deletePost(postID) {
-                this.$http.post("/admin/deletePost",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    alert(value.body.msg);
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
             }
         }
     });
