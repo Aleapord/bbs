@@ -66,14 +66,13 @@ public class AdminController {
     }
     @PostMapping("/deletePost")
     @ResponseBody
-    public deletePost(int postID){
+    public HashMap<String,Object> deletePost(int postID){
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
         postService.deletePost(postID);
         msg="删除成功";
         hashMap.put("msg",msg);
         return hashMap;
-
     }
 
 }
