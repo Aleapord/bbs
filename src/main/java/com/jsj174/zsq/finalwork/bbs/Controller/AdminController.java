@@ -95,4 +95,47 @@ public class AdminController {
         hashMap.put("msg",msg);
         return hashMap;
     }
+    @PostMapping("/top")
+    @ResponseBody
+    public HashMap<String,Object> top(int postID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        postService.updateTop(1,postID);
+        msg="置顶成功！";
+        hashMap.put("msg",msg);
+        return hashMap;
+
+    }
+    @PostMapping("/cancleTop")
+    @ResponseBody
+    public HashMap<String,Object> cancleTop(int postID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        postService.updateTop(0,postID);
+        msg="取消置顶成功！";
+        hashMap.put("msg",msg);
+        return hashMap;
+    }
+    @PostMapping("/digest")
+    @ResponseBody
+    public HashMap<String,Object> digest(int postID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        postService.updatePoint(-1,postID);
+        msg="加精成功！";
+        hashMap.put("msg",msg);
+        return hashMap;
+
+    }
+    @PostMapping("/cancleDigest")
+    @ResponseBody
+    public HashMap<String,Object> cancleDigest(int postID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        postService.updateTop(0,postID);
+        msg="取消加精成功！";
+        hashMap.put("msg",msg);
+        return hashMap;
+    }
+
 }

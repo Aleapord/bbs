@@ -44,6 +44,10 @@ public interface PostMapper {
     @Update("update post set top=#{top} where postID=#{postID}")
     void updateTop(@Param("top") int top, @Param("postID") int postID);
 
+
+    @Update("update post set point=#{point} where postID=#{postID}")
+    void updatePoint(@Param("point") int top, @Param("postID") int postID);
+
     @Update("update post set likes=likes+1 where postID=#{postID}")
     void updateLikes(@Param("postID") int postID);
 
