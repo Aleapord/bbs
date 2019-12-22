@@ -32,23 +32,26 @@ public class AdminController {
     public HashMap<String,Object> login(LoginForm loginForm){
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
+        String token="";
+        System.out.println(loginForm.getName()+loginForm.getPassword());
         int status=0;
         if(loginForm.getName().equals("Admin")){
             if (loginForm.getPassword().equals("123456")){
                 msg="登录成功！";
                 status=1;
+                hashMap.put("token",tokenService.getToken(loginForm.getName(),loginForm.getPassword()));
+            }else {
+                msg = "密码错误！";
+                status = 0;
             }
-            msg="密码错误！";
-            status=0;
         }
         else {
             msg="请输入正确的用户名！";
             status=0;
         }
-
         hashMap.put("msg",msg);
         hashMap.put("status",status);
-        hashMap.put("token",tokenService.getToken(loginForm.getName(),loginForm.getPassword()));
+
         return hashMap;
 
     }
