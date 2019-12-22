@@ -25,7 +25,7 @@ public interface UserMapper {
     @Delete("delete from user where userID = #{userID}")
     void deleteUser(@Param("userID") int userID);
 
-    @Update("update user set username=#{user.username},gender=#{user.gender},address=#{user.address},job=#{user.job},telephone=#{user.telephone},intro=#{user.introduction}")
+    @Update("update user set username=#{user.username},gender=#{user.gender},address=#{user.address},job=#{user.job},telephone=#{user.telephone},introduction=#{user.introduction} where userID=#{user.userID}")
     void updateUser(@Param("user") User user);
 
     @Select("select password from user where userId=#{userID}")

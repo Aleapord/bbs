@@ -60,4 +60,8 @@ public class PostService {
     public void updateLikes(int postID) {
         postMapper.updateLikes(postID);
     }
+
+    public void deletePost(int postID) {
+        postMapper.deletePost(postID);
+    }
 }

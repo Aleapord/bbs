@@ -46,4 +46,7 @@ public interface PostMapper {
 
     @Update("update post set likes=likes+1 where postID=#{postID}")
     void updateLikes(@Param("postID") int postID);
+
+    @Delete("delete from post where postID = #{postID}")
+    void deletePost(@Param("postID") int postID);
 }
