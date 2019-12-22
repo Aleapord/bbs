@@ -15,6 +15,10 @@ public class TokenService {
         return token;
     }
 
+    public String getToken(String username,String password){
+        return JWT.create().withAudience(username)
+                .sign(Algorithm.HMAC256(password));
+    }
     public int decodeToken(String token) {
 
         return Integer.parseInt(JWT.decode(token).getAudience().get(0));
