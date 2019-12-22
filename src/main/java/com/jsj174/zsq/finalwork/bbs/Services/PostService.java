@@ -2,6 +2,7 @@ package com.jsj174.zsq.finalwork.bbs.Services;
 
 import com.jsj174.zsq.finalwork.bbs.Mapper.PostMapper;
 import com.jsj174.zsq.finalwork.bbs.Models.Post;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,9 @@ public class PostService {
 
     public void updateTop(int top, int postID) {
         postMapper.updateTop(top, postID);
+    }
+    public void updatePost(Post post){
+        postMapper.updatePost(post);
     }
 
     public void updateLikes(int postID) {

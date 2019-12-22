@@ -67,6 +67,7 @@ public class AdminController {
     }
 
     @GetMapping("/getpostlist")
+    @ResponseBody
     public List<Post> getPosts() {
         return postService.getAllPost();
     }
@@ -133,6 +134,16 @@ public class AdminController {
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
         postService.updateTop(0,postID);
+        msg="取消加精成功！";
+        hashMap.put("msg",msg);
+        return hashMap;
+    }
+    @ResponseBody("/updatePost")
+    @ResponseBody
+    public HashMap<String,Object> updatePost(Post post){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        postService.updatePost(post);
         msg="取消加精成功！";
         hashMap.put("msg",msg);
         return hashMap;
