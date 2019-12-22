@@ -2,8 +2,10 @@ package com.jsj174.zsq.finalwork.bbs.Controller;
 
 import com.jsj174.zsq.finalwork.bbs.Models.LoginForm;
 import com.jsj174.zsq.finalwork.bbs.Models.Post;
+import com.jsj174.zsq.finalwork.bbs.Models.User;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.TokenService;
+import com.jsj174.zsq.finalwork.bbs.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ public class AdminController {
     private PostService postService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String admin() {
@@ -59,6 +63,17 @@ public class AdminController {
     @GetMapping("/getpostlist")
     public List<Post> getPosts() {
         return postService.getAllPost();
+    }
+    @PostMapping("/deletePost")
+    @ResponseBody
+    public deletePost(int postID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        String msg = "";
+        postService.deletePost(postID);
+        msg="删除成功";
+        hashMap.put("msg",msg);
+        return hashMap;
+
     }
 
 }
