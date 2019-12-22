@@ -9,14 +9,10 @@
     <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="fonts/icomoon/stylesheet.css"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/style.css"/>
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
 </head>
 <body>
 <!-- tt-mobile menu -->
@@ -26,14 +22,14 @@
     </ul>
     <div class="mm-navbtn-names">
         <div class="mm-closebtn">
-            关闭导航
+            Close
             <div class="tt-icon">
                 <svg>
-                    <use xlink:href="#icon-cancel"></use>
+                  <use xlink:href="#icon-cancel"></use>
                 </svg>
             </div>
         </div>
-        <div class="mm-backbtn">返回</div>
+        <div class="mm-backbtn">Back</div>
     </div>
 </nav>
 <header id="tt-header">
@@ -57,7 +53,7 @@
                     <nav>
                         <ul>
                             <li><a href="page-tabs.html"><span>关于</span></a></li>
-                            <li><a href="page-categories.html"><span>版块</span></a></li>
+                            <li><a href="page-categories.html"><span>板块</span></a></li>
                             <li><a href="page-questions.html"><span>问答</span></a></li>
                             <li><a href="page-create-topic.html"><span>发帖子</span></a></li>
                             <li>
@@ -173,6 +169,7 @@
                 <!-- /tt-search -->
             </div>
 
+
             <div class="col-auto ml-auto" id="header_User">
                 <!-- 如果有token,表示登录了账号 -->
                 <template v-if="hasToken!==''">
@@ -201,150 +198,138 @@
                 </template>
             </div>
 
+
         </div>
     </div>
 </header>
 <main id="tt-pageContent">
     <div class="container" id="app">
-        <template v-if="postID==null">
-            <div class="tt-layout-404">
-                <span class="tt-icon">
-                    <svg class="icon">
-                        <use xlink:href="#icon-error_404"></use>
-                    </svg>
-                </span>
-                <h6 class="tt-title">ERROR 404</h6>
-                <p>对不起，找不到这个帖子！</p>
+        <div class="tt-single-topic-list">
+            <div class="tt-item">
+                 <div class="tt-single-topic">
+                    <div class="tt-item-header">
+                        <div class="tt-item-info info-top">
+                            <div class="tt-avatar-icon">
+                                <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(post.username)"></use></svg></i>
+                            </div>
+                            <div class="tt-avatar-title">
+                               <a href="#">{{post.username}}</a>
+                            </div>
+                            <a href="#" class="tt-info-time">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>{{post.time}}
+                            </a>
+                        </div>
+                        <h3 class="tt-item-title">
+                            <a href="#">{{post.title}}</a>
+                        </h3>
+                        <div class="tt-item-tag">
+                            <span class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</span>
+                        </div>
+                    </div>
+                    <div class="tt-item-description">
+                        <b>
+                           {{post.content}}
+                        </b>
+                    </div>
+                    <div class="tt-item-info info-bottom">
+                        <a href="#" @click="like()" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                            <span class="tt-text">{{post.likes}}</span>
+                        </a>
+                        <a href="#" class="tt-icon-btn">
+                             <i class="tt-icon"><svg><use xlink:href="#icon-view"></use></svg></i>
+                            <span class="tt-text">{{post.views}}</span>
+                        </a>
+                        <a href="#" class="tt-icon-btn">
+                             <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
+                            <span class="tt-text">{{post.replies}}</span>
+                        </a>
+                        <div class="col-separator"></div>
+                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-share"></use></svg></i>
+                        </a>
+                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-flag"></use></svg></i>
+                        </a>
+                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                             <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </template>
-        <template v-else>
-            <div class="tt-single-topic-list">
+            <div class="tt-item">
+                <div class="tt-info-box">
+                    <hr>
+                    <h6 class="tt-title">最佳评论者</h6>
+                    <div class="tt-row-icon">
+
+                       <template v-for="comment in comments"><div class="tt-item">
+                           <a href="#" class=" tt-icon-avatar">
+                               <svg><use v-bind:xlink:href="name_picture(comment.username)"></use></svg>
+                           </a>
+                       </div></template>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <template v-for="comment in comments">
                 <div class="tt-item">
                     <div class="tt-single-topic">
-                        <div class="tt-item-header">
+                        <div class="tt-item-header pt-noborder">
                             <div class="tt-item-info info-top">
                                 <div class="tt-avatar-icon">
-                                    <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(post.username)"></use></svg></i>
+                                    <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(comment.username)"></use></svg></i>
                                 </div>
                                 <div class="tt-avatar-title">
-                                    <a href="#">{{post.username}}</a>
+                                    <a href="#">{{comment.username}}</a>
                                 </div>
-                                <a style="cursor: pointer" class="tt-info-time">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>{{post.time}}
+                                <a href="#" class="tt-info-time">
+                                    <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>{{comment.time}}
                                 </a>
-                            </div>
-                            <h3 class="tt-item-title">
-                                <a href="#">{{post.title}}</a>
-                            </h3>
-                            <div class="tt-item-tag">
-                                <span class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</span>
                             </div>
                         </div>
                         <div class="tt-item-description">
-                            <b>
-                                {{post.content}}
-                            </b>
+                            {{comment.comment}}
                         </div>
                         <div class="tt-item-info info-bottom">
-                            <a style="cursor: pointer;user-select: none" @click="like()" class="tt-icon-btn">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-                                <span class="tt-text">{{post.likes}}</span>
-                            </a>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-view"></use></svg></i>
-                                <span class="tt-text">{{post.views}}</span>
-                            </a>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
-                                <span class="tt-text">{{post.replies}}</span>
                             </a>
                             <div class="col-separator"></div>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                            <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
                                 <i class="tt-icon"><svg><use xlink:href="#icon-share"></use></svg></i>
                             </a>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                            <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
                                 <i class="tt-icon"><svg><use xlink:href="#icon-flag"></use></svg></i>
                             </a>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                            <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
                                 <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
                             </a>
                         </div>
                     </div>
                 </div>
-                <div class="tt-item">
-                    <div class="tt-info-box">
-                        <hr>
-                        <h6 class="tt-title">最佳评论者</h6>
-                        <div class="tt-row-icon">
+            </template>
 
-                            <template v-for="comment in comments"><div class="tt-item">
-                                <a href="#" class=" tt-icon-avatar">
-                                    <svg><use v-bind:xlink:href="name_picture(comment.username)"></use></svg>
-                                </a>
-                            </div></template>
-                        </div>
-                        <hr>
-                    </div>
+        </div>
+        <div class="tt-wrapper-inner">
+            <h4 class="tt-title-separator"><span>评论见底了！</span></h4>
+        </div>
+        <div class="tt-wrapper-inner">
+            <div class="pt-editor form-default">
+                <h6 class="pt-title">发表你的评论</h6>
+                <div class="form-group">
+                    <textarea v-model="commentContent" name="message" class="form-control" rows="5" placeholder="输入帖子内容"></textarea>
                 </div>
-                <template v-for="comment in comments">
-                    <div class="tt-item">
-                        <div class="tt-single-topic">
-                            <div class="tt-item-header pt-noborder">
-                                <div class="tt-item-info info-top">
-                                    <div class="tt-avatar-icon">
-                                        <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(comment.username)"></use></svg></i>
-                                    </div>
-                                    <div class="tt-avatar-title">
-                                        <a href="#">{{comment.username}}</a>
-                                    </div>
-                                    <a href="#" class="tt-info-time">
-                                        <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>{{comment.time}}
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="tt-item-description">
-                                {{comment.comment}}
-                            </div>
-                            <div class="tt-item-info info-bottom">
-                                </a>
-                                <div class="col-separator"></div>
-                                <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-share"></use></svg></i>
-                                </a>
-                                <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-flag"></use></svg></i>
-                                </a>
-                                <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-                                </a>
-                            </div>
+                <div class="pt-row">
+                    <div class="col-auto">
+                        <div class="checkbox-group">
+                            <input  type="checkbox" id="checkBox21" name="checkbox" checked="">
                         </div>
                     </div>
-                </template>
-
-            </div>
-            <div class="tt-wrapper-inner">
-                <h4 class="tt-title-separator"><span>评论见底了！</span></h4>
-            </div>
-            <div class="tt-wrapper-inner">
-                <div class="pt-editor form-default">
-                    <h6 class="pt-title">发表你的评论</h6>
-                    <div class="form-group">
-                        <textarea v-model="commentContent" name="message" class="form-control" rows="5" placeholder="输入帖子内容"></textarea>
-                    </div>
-                    <div class="pt-row">
-                        <div class="col-auto">
-                            <div class="checkbox-group">
-                                <input  type="checkbox" id="checkBox21" name="checkbox" checked="">
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <a style="cursor: pointer;color: white" @click="addComment()" class="btn btn-secondary btn-width-lg">发布</a>
-                        </div>
+                    <div class="col-auto">
+                        <a href="#" @click="addComment()" class="btn btn-secondary btn-width-lg">发布</a>
                     </div>
                 </div>
             </div>
-        </template>
+        </div>
     </div>
 </main>
 <div id="js-popup-settings" class="tt-popup-settings">
@@ -444,67 +429,131 @@
     </span>
 </a>
 
-<!-- 帖子搜索弹出框 -->
 <div class="modal fade" id="modalAdvancedSearch" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="tt-modal-advancedSearch">
-                <div class="tt-modal-title">
-                    <i class="pt-icon">
-                        <svg>
-                            <use xlink:href="#icon-advanced_search"></use>
-                        </svg>
-                    </i>
-                    帖子搜索
-                    <a class="pt-close-modal" href="#" data-dismiss="modal">
-                        <svg class="icon">
-                            <use xlink:href="#icon-cancel"></use>
-                        </svg>
-                    </a>
-                </div>
-                <form class="form-default">
-                    <div class="form-group">
-                        <i class="pt-customInputIcon">
-                            <svg class="tt-icon">
-                                <use xlink:href="#icon-search"></use>
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="tt-modal-advancedSearch">
+				<div class="tt-modal-title">
+					<i class="pt-icon">
+						<svg>
+							<use xlink:href="#icon-advanced_search"></use>
+						</svg>
+					</i>
+					Advanced Search
+					<a class="pt-close-modal" href="#" data-dismiss="modal">
+						<svg class="icon">
+							<use xlink:href="#icon-cancel"></use>
+						</svg>
+					</a>
+				</div>
+				<form class="form-default">
+					<div class="form-group">
+						<i class="pt-customInputIcon">
+                           <svg class="tt-icon">
+                              <use xlink:href="#icon-search"></use>
                             </svg>
                         </i>
-                        <input type="text" name="name" class="form-control pt-customInputSearch" id="searchForum" placeholder="搜索相关帖子">
-                    </div>
-                    <div class="form-group">
-                        <a href="#" class="btn btn-secondary btn-block">搜索</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+						<input type="text" name="name" class="form-control pt-customInputSearch" id="searchForum" placeholder="Search all forums">
+					</div>
+					<div class="form-group">
+						<label for="searchName">Posted by</label>
+						<input type="text" name="name" class="form-control" id="searchName" placeholder="Username">
+					</div>
+					<div class="form-group">
+						<label for="searchCategory">In Category</label>
+						<input type="text" name="name" class="form-control" id="searchCategory" placeholder="Add Category">
+					</div>
+					<div class="checkbox-group">
+				        <input type="checkbox" id="searcCheckBox01" name="checkbox">
+				        <label for="searcCheckBox01">
+				            <span class="check"></span>
+				            <span class="box"></span>
+				            <span class="tt-text">Include all tags</span>
+				        </label>
+				    </div>
+					<div class="form-group">
+						<label>Only return topics/posts that...</label>
+						<div class="checkbox-group">
+					        <input type="checkbox" id="searcCheckBox02" name="checkbox">
+					        <label for="searcCheckBox02">
+					            <span class="check"></span>
+					            <span class="box"></span>
+					            <span class="tt-text">I liked</span>
+					        </label>
+					    </div>
+					    <div class="checkbox-group">
+					        <input type="checkbox" id="searcCheckBox03" name="checkbox">
+					        <label for="searcCheckBox03">
+					            <span class="check"></span>
+					            <span class="box"></span>
+					            <span class="tt-text">are in my messages</span>
+					        </label>
+					    </div>
+					    <div class="checkbox-group">
+					        <input type="checkbox" id="searcCheckBox04" name="checkbox">
+					        <label for="searcCheckBox04">
+					            <span class="check"></span>
+					            <span class="box"></span>
+					            <span class="tt-text">I’ve read</span>
+					        </label>
+					    </div>
+					</div>
+					<div class="form-group">
+						<select class="form-control" id="searchTop">
+							<option>any</option>
+							<option>value 01</option>
+							<option>value 02</option>
+							<option>value 03</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="searchaTopics">Where topics</label>
+						<select class="form-control" id="searchaTopics">
+							<option>any</option>
+							<option>value 01</option>
+							<option>value 02</option>
+							<option>value 03</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="searchAdvTime">Posted</label>
+						<div class="row">
+							<div class="col-6">
+								<select class="form-control">
+									<option>any</option>
+									<option>value 01</option>
+									<option>value 02</option>
+									<option>value 03</option>
+								</select>
+							</div>
+							<div class="col-6">
+								<input type="text" name="name" class="form-control" id="searchAdvTime" placeholder="dd-mm-yyyy">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="minPostCount">Minimum Post Count</label>
+						<select class="form-control" id="minPostCount">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option selected>10</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<a href="#" class="btn btn-secondary btn-block">Search</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
-
-<!-- 弹出的模态框 -->
-<div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="tt-modal-advancedSearch">
-                <div class="tt-modal-title">
-                    <i class="pt-icon">
-                        <span class="icon-moon" style="font-size: 30px;color: #d4d634;font-style: normal">&#xec74;</span>
-                    </i>
-                    提示
-                </div>
-                <form class="form-default">
-                    <div class="tt-row-btn" style="padding-top: 0;padding-bottom: 0">
-                        <table id="popContents" style="text-align: left;margin: 0 auto">
-                        </table>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 0">
-                        <input type="button" data-dismiss="modal" class="btn btn-secondary btn-block pt-close-modal" value="好的">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script src="js/bundle.js"></script>
 <svg width="0" height="0" class="hidden">
 	 <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
@@ -621,8 +670,7 @@
         el: "#header_User",
         data: {
             hasToken: sessionStorage.getItem("token") !== null ? sessionStorage.getItem("token") : "",
-            username: sessionStorage.getItem("username"),
-            userID: sessionStorage.getItem("userID")
+            username: sessionStorage.getItem("username")
         },
         methods: {
             name_picture: function() {
@@ -635,6 +683,7 @@
         data:{
             post:null,
             comments:null,
+            username:sessionStorage.getItem("username"),
             userID:sessionStorage.getItem("userID"),
             postID:sessionStorage.getItem("Detail_postID"),
             commentContent:null
@@ -661,52 +710,34 @@
                 },function (reason) { console.log("失败！") })
             },
             like:function(){
-                if(vue_User.$data.hasToken !== "") {
-                    var url = "/post/like/"+this.postID;
-                    this.$http.get(url).then(function (value) {
-                        this.getPost();
-                    },function (reason) { console.log("失败！") })
-                }else{
-                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: red'>&#xeaf6;</td><td>登录之后才能点赞！</td></tr>");
-                    popMessage();
-                }
+                var url = "/post/like/"+this.postID;
+                this.$http.get(url).then(function (value) {
+                    location.reload();
+                    this.comments=value.body;
+                },function (reason) { console.log("失败！") })
             },
             addComment:function () {
-                if(vue_User.$data.hasToken !== "") {
-                    if (this.commentContent === null) {
-                        $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: red'>&#xeb01;</td><td>请输入评论内容！</td></tr>");
-                        popMessage();
-                    } else {
-                        var url = "post/addComment";
-                        this.$http.post(url, {
-                            username: vue_User.$data.username,
-                            userID: vue_User.$data.userID,
-                            postID: this.postID,
-                            comment: this.commentContent
-                        }, {emulateJSON: true}).then(function (value) {
-                            $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>评论成功！财富 +5</td></tr>");
-                            popMessage();
-                            setTimeout(function() {location.reload()},700);
-                        }, function (reason) {
-                            console.log("失败！");
-                            $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>登录之后才能发表评论！</td></tr>");
-                            popMessage();
-                        })
-                    }
-                }else {             // 提示他先登录
-                    $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: red'>&#xeaf6;</td><td>登录之后才能发表评论！</td></tr>");
-                    popMessage();
+                if(this.commentContent===null){
+                    alert("请输入内容！")
+                }else{
+                    var url = "post/addComment";
+                    this.$http.post(url,{
+                        username:this.username,
+                        userID:this.userID,
+                        postID:this.postID,
+                        comment:this.commentContent
+                    },{emulateJSON:true}).then(function (value) {
+                        location.reload();
+                    },function (reason) { console.log("失败！")})
                 }
+
             }
         }
+
+
+
     });
-    if(vue.$data.postID !== null) {
-        vue.getPost();
-        vue.get_contents();
-    }
-    /* 显示模态框和提示信息 */
-    function popMessage() {
-        $("#tipsModal").modal('show');
-    }
+    vue.getPost();
+    vue.get_contents();
 </script>
 </html>
