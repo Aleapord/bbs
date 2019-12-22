@@ -35,7 +35,7 @@ public class AdminController {
     @GetMapping("/center")
     public String adminCenter(){
 
-        return "admin"
+        return "admin";
     }
     @PostMapping("/login")
     @ResponseBody
