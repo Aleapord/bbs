@@ -1,6 +1,5 @@
 package com.jsj174.zsq.finalwork.bbs.Controller;
 
-import com.jsj174.zsq.finalwork.bbs.Models.Post;
 import com.jsj174.zsq.finalwork.bbs.Services.CommentService;
 import com.jsj174.zsq.finalwork.bbs.Services.PostService;
 import com.jsj174.zsq.finalwork.bbs.Services.UserService;
@@ -26,14 +25,14 @@ public class UserController {
 
     @PostMapping("/getWealth")
     @ResponseBody
-    public HashMap<String,Object> getWealth(@PathVariable int userID){
-        HashMap<String,Object> hashMap = new HashMap<>();
+    public HashMap<String, Object> getWealth(@PathVariable int userID) {
+        HashMap<String, Object> hashMap = new HashMap<>();
 
-        if(userService.getUser(userID) == null)
-            hashMap.put("msg","该用户不存在！");
+        if (userService.getUser(userID) == null)
+            hashMap.put("msg", "该用户不存在！");
         else {
             int wealth = userService.getWealth(userID);
-            hashMap.put("wealth",wealth);
+            hashMap.put("wealth", wealth);
         }
         return hashMap;
     }
