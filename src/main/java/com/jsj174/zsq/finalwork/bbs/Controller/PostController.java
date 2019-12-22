@@ -27,7 +27,7 @@ public class PostController {
     @GetMapping("/")
     @ResponseBody
     public List<Post> postList() {
-        return postService.getAllPost();
+        return postService.getSortedPost();
     }
 
     @GetMapping("/{postId}")
@@ -46,7 +46,6 @@ public class PostController {
         hashMap.put("likes", post.getLikes());
         return hashMap;
     }
-
 
     @GetMapping("/getComments/{postID}")
     @ResponseBody
@@ -87,6 +86,7 @@ public class PostController {
         hashMap.put("msg", "阅读数加1");
         return hashMap;
     }
+
     @PostMapping("/getPostNum")
     @ResponseBody
     public String getPostNum(String section){
@@ -94,13 +94,13 @@ public class PostController {
         List<Post> posts = postService.getSectionPost(section);
         return posts.size()+"";
     }
+
     @PostMapping("/getSectionPost")
     @ResponseBody
     public List<Post> getSectionPost(String section){
 
         return postService.getSectionPost(section);
     }
-
 
     @PostMapping("/setAnswer")
     @ResponseBody

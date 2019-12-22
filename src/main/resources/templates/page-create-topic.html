@@ -194,7 +194,7 @@
                     <div class="col-md-4">
                         <div id="rewardDiv" class="form-group" style="display: none">
                             <label for="questionCoin">设置悬赏币</label>
-                            <input v-model="questionCoin" type="number" v-bind:min="checkForMin(coins)" v-bind:max="getCoins(coins)" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
+                            <input v-model="questionCoin" type="number" v-bind:min="(coins >= 1 ? 1 : 0)" v-bind:max="coins + ''" name="questionCoin" class="form-control" id="questionCoin" placeholder="输入悬赏币">
                         </div>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                                 <label>所属版块</label>
                                 <select class="form-control" id="forumSection" v-model="section" required>
                                     <template v-for="bk in bks">
-                                        <option v-bind:value="getSection(bk)">{{bk.substr(2,bk.length - 2)}}</option>
+                                        <option v-bind:value="bk">{{bk.substr(2,bk.length - 2)}}</option>
                                     </template>
                                 </select>
                             </div>
@@ -469,7 +469,7 @@
                 if(vue_PostForum.$data.type === '悬赏') {
                     var min = questionCoin.getAttribute("min");
                     var max = questionCoin.getAttribute("max");
-                    if(questionCoin.value <= max && questionCoin.value >= min) {
+                    if(parseInt(questionCoin.value) <= max && parseInt(questionCoin.value) >= min) {
                         if(forumContents.value.length !== 0) {
                             if(forumSection.value.length === 0)
                                 str = "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: RED'>&#xeb01;</td><td>版块不能为空！</td></tr>";
@@ -544,15 +544,6 @@
             bks: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08C++","09动漫","10文学","11游戏"]
         },
         methods:{
-            getCoins(coins) {
-                return coins;
-            },
-            getSection(section) {
-                return section;
-            },
-            checkForMin(coins) {
-                return coins >= 1 ? 1 : 0;
-            },
             getWealth() {
                 if(vue_User.$data.hasToken === "") {            // 该用户未登录！
                     this.coins = 0;
@@ -577,7 +568,7 @@
                     userID: vue_User.$data.userID,
                     username: vue_User.$data.username,
                     title: this.title,
-                    point: parseInt(this.questionCoin == null ? "0" : this.questionCoin),
+                    point: parseInt(this.questionCoin == null ? "0" : this.questionCoin) + 1,
                     section: this.section,
                     content: this.contents,
                     time: new Date().format("yyyy-MM-dd hh:mm:ss")},{emulateJSON:true}).then(function(value) {
@@ -588,7 +579,7 @@
                             vue_PostForum.$data.questionCoin + "</td></tr>");
                     }
                     popMessage();
-                    setTimeout(function() {location.reload()},500);
+                    setTimeout(function() {location.reload()},1000);
                 },function(reason) {
                     $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
                     popMessage();

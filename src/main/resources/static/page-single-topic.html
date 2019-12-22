@@ -749,7 +749,8 @@
                             username: vue_User.$data.username,
                             userID: vue_User.$data.userID,
                             postID: this.postID,
-                            comment: this.commentContent
+                            comment: this.commentContent,
+                            time: new Date().format("yyyy-MM-dd hh:mm:ss")
                         }, {emulateJSON: true}).then(function (value) {
                             $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>评论成功！财富 +5</td></tr>");
                             popMessage();
@@ -776,7 +777,8 @@
                             username: vue_User.$data.username,
                             userID: vue_User.$data.userID,
                             postID: this.postID,
-                            comment: this.commentContent
+                            comment: this.commentContent,
+                            time: new Date().format("yyyy-MM-dd hh:mm:ss")
                         }, {emulateJSON: true}).then(function (value) {
                             $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>回答成功！财富 +5</td></tr>");
                             popMessage();
