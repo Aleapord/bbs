@@ -23,7 +23,6 @@ public class PostController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("/")
     @ResponseBody
     public List<Post> postList() {
@@ -86,5 +85,17 @@ public class PostController {
         postService.updateViews(postID);
         hashMap.put("msg", "阅读数加1");
         return hashMap;
+    }
+
+    @PostMapping("/setAnswer")
+    @ResponseBody
+    public HashMap<String, Object> setAnswer(int commentID,int point,int postID, int userID) {
+        System.out.println(postID + ":" + commentID);
+
+        commentService.updateAnswer(commentID);
+        postService.updatePoint(1,postID);
+
+        userService.updateWealth(point,userID);
+        return new HashMap<>();
     }
 }

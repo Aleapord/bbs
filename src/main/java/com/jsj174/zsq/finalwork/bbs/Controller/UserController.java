@@ -61,11 +61,9 @@ public class UserController {
     }
 
 
-
-
     @PostMapping("/getWealth")
     @ResponseBody
-    public HashMap<String, Object> getWealth(@PathVariable int userID) {
+    public HashMap<String, Object> getWealth(int userID) {
         HashMap<String, Object> hashMap = new HashMap<>();
 
         if (userService.getUser(userID) == null)

@@ -75,7 +75,7 @@
                     <div class="form-group">
                         <input type="button" onclick="login()" class="btn btn-secondary btn-block" value="登录">
                     </div>
-                    <p>还没有账号? <a href="/signup" class="tt-underline">在此注册</a></p>
+                    <p>还没有账号? <a href="/sign-up" class="tt-underline">在此注册</a></p>
                     <div class="tt-notes">
                         登录、注册或者继续进行，即表示我同意BBS的
                         <span style="cursor: pointer" class="tt-underline">使用条款</span> 和 <span style="cursor: pointer" class="tt-underline">隐私政策.</span>
@@ -244,7 +244,6 @@
                         sessionStorage.setItem("username",value.body.user.username);
                         sessionStorage.setItem("userID",value.body.user.userID);
                         sessionStorage.setItem("token",value.body.token);
-                        sessionStorage.setItem("coins",value.body.user.wealth);
                         setTimeout(function() {location.href = "/";},1000);
                         $("#popContents").html(
                             "<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd6065'>&#xeaf4;</td><td>" +

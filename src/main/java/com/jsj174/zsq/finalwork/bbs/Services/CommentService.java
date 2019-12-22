@@ -18,8 +18,8 @@ public class CommentService {
         commentMapper.addComment(comment);
     }
 
-    public Post getComment(int postID) {
-        return commentMapper.getComment(postID);
+    public Comment getComment(int commentID) {
+        return commentMapper.getComment(commentID);
     }
 
     public void deleteComment(int commentID) {
@@ -30,7 +30,7 @@ public class CommentService {
         return commentMapper.getComments(postID);
     }
 
-    public void updateAnswer(){
-        commentMapper.updateAnswer();
+    public void updateAnswer(int commentID){
+        commentMapper.updateAnswer(commentID);
     }
 }
