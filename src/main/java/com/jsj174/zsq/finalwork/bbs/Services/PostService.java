@@ -2,11 +2,10 @@ package com.jsj174.zsq.finalwork.bbs.Services;
 
 import com.jsj174.zsq.finalwork.bbs.Mapper.PostMapper;
 import com.jsj174.zsq.finalwork.bbs.Models.Post;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -16,6 +15,29 @@ public class PostService {
 
     public List<Post> getAllPost() {
         return postMapper.getAllPost();
+    }
+
+    /* 获得排序了的帖子列表 */
+    public List<Post> getSortedPost() {
+        List<Post> posts = getAllPost();
+        ArrayList<Post> temp = new ArrayList<>();
+        ArrayList<Post> temp_1 = new ArrayList<>();
+        if(posts == null)
+            return null;
+        // 先获得所有的置顶的帖子
+        for(Post i : posts) {
+            if(i.getTop() > 0) {
+                temp.add(i);
+            }else {
+                temp_1.add(i);
+            }
+        }
+
+        temp_1.sort((p1, p2) -> p2.getTime().compareTo(p1.getTime()));
+
+        temp.addAll(temp_1);
+
+        return temp;
     }
 
     public List<Post> getUserPost(int userID) {
