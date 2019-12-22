@@ -29,7 +29,13 @@ public class AdminController {
 
     @GetMapping("/")
     public String admin() {
-        return "admin";
+        return "admin_login";
+    }
+
+    @GetMapping("/center")
+    public String adminCenter(){
+
+        return "admin"
     }
     @PostMapping("/login")
     @ResponseBody
