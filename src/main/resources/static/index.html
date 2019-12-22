@@ -34,8 +34,8 @@
     </div>
 </nav>
 <header id="tt-header">
-    <div class="container" id="header_User">
-        <div class="row tt-row no-gutters">
+    <div class="container">
+        <div id="box_User" class="row tt-row no-gutters">
             <div class="col-auto">
                 <!-- toggle mobile menu -->
                 <a class="toggle-mobile-menu" href="#">
@@ -115,31 +115,33 @@
                 <!-- /tt-search -->
             </div>
 
-            <!-- 如果有token,表示登录了账号 -->
-            <template v-if="hasToken!==''">
-                <div class="col-auto ml-auto">
-                    <div class="tt-user-info d-flex justify-content-center">
-                        <a id="js-settings-btn" class="tt-btn-icon">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
-                        </a>
-                        <div class="tt-avatar-icon tt-size-md">
-                            <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture(username)"></use></svg></i>
+            <div class="col-auto ml-auto" id="header_User">
+                <!-- 如果有token,表示登录了账号 -->
+                <template v-if="hasToken!==''">
+                    <div class="col-auto ml-auto">
+                        <div class="tt-user-info d-flex justify-content-center">
+                            <a id="js-settings-btn" class="tt-btn-icon">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
+                            </a>
+                            <div class="tt-avatar-icon tt-size-md">
+                                <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture()"></use></svg></i>
+                            </div>
+                            <a href="page-single-user.html" class="tt-btn-icon">
+                                <span>{{username}}</span>
+                            </a>
                         </div>
-                        <a href="page-single-user.html" class="tt-btn-icon">
-                            <span>{{username}}</span>
-                        </a>
                     </div>
-                </div>
-            </template>
-            <!-- 否则就没有登录账号 -->
-            <template v-else>
-                <div class="col-auto ml-auto">
-                    <div class="tt-account-btn">
-                        <a href="/login" class="btn btn-primary">登录</a>
-                        <a href="/sign-up" class="btn btn-secondary">注册</a>
+                </template>
+                <!-- 否则就没有登录账号 -->
+                <template v-else>
+                    <div class="col-auto ml-auto">
+                        <div class="tt-account-btn">
+                            <a href="/login" class="btn btn-primary">登录</a>
+                            <a href="/sign-up" class="btn btn-secondary">注册</a>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </div>
 
         </div>
     </div>
@@ -476,13 +478,41 @@
         data: {
             hasToken: sessionStorage.getItem("token") !== null ? sessionStorage.getItem("token") : "",
             username: sessionStorage.getItem("username"),
+            userID: sessionStorage.getItem("userID")
         },
         methods: {
-            name_picture: function(name) {
-                return "#icon-ava-" + name.substr(0,1).toLowerCase();
+            name_picture: function() {
+                return "#icon-ava-" + this.username.substr(0,1).toLowerCase();
             }
         }
     });
+    // function f() {
+    //     var hasUser = '<div class="col-auto ml-auto">\n' +
+    //         '    <div class="tt-user-info d-flex justify-content-center">\n' +
+    //         '        <a id="js-settings-btn" class="tt-btn-icon">\n' +
+    //         '            <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>\n' +
+    //         '        </a>\n' +
+    //         '        <div class="tt-avatar-icon tt-size-md">\n' +
+    //         '            <i class="tt-icon"><svg><use xlink:href="' + vue_User.name_picture() + '"></use></svg></i>\n' +
+    //         '        </div>\n' +
+    //         '        <a href="page-single-user.html" class="tt-btn-icon">\n' +
+    //         '            <span>' + vue_User.$data.username + '</span>\n' +
+    //         '        </a>\n' +
+    //         '    </div>\n' +
+    //         '</div>';
+    //     var nonUser = '<div class="col-auto ml-auto">\n' +
+    //         '    <div class="tt-account-btn">\n' +
+    //         '        <a href="/login" class="btn btn-primary">登录</a>\n' +
+    //         '        <a href="/sign-up" class="btn btn-secondary">注册</a>\n' +
+    //         '    </div>\n' +
+    //         '</div>';
+    //     var box_User = $("#box_User").get(0);
+    //     if(vue_User.$data.hasToken !== '') {
+    //         box_User.innerHTML += hasUser;
+    //     }else {
+    //         box_User.innerHTML += nonUser;
+    //     }
+    // }
     var vue = new Vue({
         el:"#app",
         data:{

@@ -40,7 +40,8 @@ public class PostController {
     public HashMap<String,Object> like(@PathVariable int postID){
         HashMap<String,Object> hashMap = new HashMap<>();
         postService.updateLikes(postID);
-        hashMap.put("msg","点赞成功！");
+        Post post = postService.getPost(postID);
+        hashMap.put("likes",post.getLikes());
         return hashMap;
     }
 
