@@ -107,7 +107,7 @@ public class AdminController {
         return hashMap;
 
     }
-    @PostMapping("/cancleTop")
+    @PostMapping("/cancelTop")
     @ResponseBody
     public HashMap<String,Object> cancleTop(int postID){
         HashMap<String,Object> hashMap = new HashMap<>();
@@ -128,7 +128,7 @@ public class AdminController {
         return hashMap;
 
     }
-    @PostMapping("/cancleDigest")
+    @PostMapping("/cancelDigest")
     @ResponseBody
     public HashMap<String,Object> cancleDigest(int postID){
         HashMap<String,Object> hashMap = new HashMap<>();
@@ -138,12 +138,12 @@ public class AdminController {
         hashMap.put("msg",msg);
         return hashMap;
     }
-    @ResponseBody("/updatePost")
+    @PostMapping("/updatePost")
     @ResponseBody
     public HashMap<String,Object> updatePost(Post post){
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
-        postService.updatePost(post);
+        postService.updatePostbyPost(post);
         msg="取消加精成功！";
         hashMap.put("msg",msg);
         return hashMap;

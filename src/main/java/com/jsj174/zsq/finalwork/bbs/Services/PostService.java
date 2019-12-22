@@ -53,7 +53,7 @@ public class PostService {
         postMapper.addPost(post);
     }
 
-    public void updatePost(Post post) {
+    public void updatePostbyPost(Post post) {
         postMapper.updatePost(post);
     }
 
