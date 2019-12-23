@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Error 404 - BBS</title>
+    <title>BBS - Error404</title>
     <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,14 +19,14 @@
     </ul>
     <div class="mm-navbtn-names">
         <div class="mm-closebtn">
-            Close
+            关闭导航
             <div class="tt-icon">
                 <svg>
-                  <use xlink:href="#icon-cancel"></use>
+                    <use xlink:href="#icon-cancel"></use>
                 </svg>
             </div>
         </div>
-        <div class="mm-backbtn">Back</div>
+        <div class="mm-backbtn">返回</div>
     </div>
 </nav>
 <header id="tt-header">
@@ -42,41 +42,20 @@
                 <!-- /toggle mobile menu -->
                 <!-- logo -->
                 <div class="tt-logo">
-                    <a href="index.html"><img src="images/logo.png" alt=""></a>
+                    <a href="/" title="BBS 论坛"><img src="images/logo.png" alt=""></a>
                 </div>
                 <!-- /logo -->
                 <!-- desctop menu -->
                 <div class="tt-desktop-menu">
                     <nav>
                         <ul>
-                            <li><a href="page-tabs.html"><span>关于</span></a></li>
-                            <li><a href="page-categories.html"><span>板块</span></a></li>
-                            <li><a href="page-questions.html"><span>问答</span></a></li>
-                            <li><a href="page-create-topic.html"><span>发帖子</span></a></li>
+                            <li><a href="/section"><span>版块</span></a></li>
+                            <li><a href="/create-forum"><span>发帖子</span></a></li>
                             <li>
-                                <a href="page-single-user.html"><span>个人中心</span></a>
+                                <a href="/user-setting"><span>个人中心</span></a>
                                 <ul>
-                                    <li><a href="index.html">首页</a></li>
-                                    <li><a href="page-single-topic.html">Single Topic</a></li>
-                                    <li><a href="page-create-topic.html">Create Topic</a></li>
-                                    <li><a href="page-single-user.html">Single User Activity</a></li>
-                                    <li><a href="page-single_threads.html">Single User Threads</a></li>
-                                    <li><a href="page-single_replies.html">Single User Replies</a></li>
-                                    <li><a href="page-single_followers.html">Single User Followers</a></li>
-                                    <li><a href="page-single_categories.html">Single User Categories</a></li>
-                                    <li><a href="page-single_settings.html">Single User Settings</a></li>
-                                    <li><a href="page-signup.html">Sign up</a></li>
-                                    <li><a href="page-login.html">Log in</a></li>
-                                    <li><a href="page-categories.html">Categories</a></li>
-                                    <li><a href="page-categories-single.html">Single Category</a></li>
-                                    <li><a href="page-tabs.html">About</a></li>
-                                    <li><a href="page-tabs_guidelines.html">Guidelines</a></li>
-                                    <li><a href="_demo_modal-advancedSearch.html">Advanced Search</a></li>
-                                    <li><a href="error404.html">Error 404</a></li>
-                                    <li><a href="_demo_modal-age-confirmation.html">Age Verification</a></li>
-                                    <li><a href="_demo_modal-level-up.html">Level up Notification</a></li>
-                                    <li><a href="messages-page.html">Message</a></li>
-                                    <li><a href="messages-compose.html">Message Compose</a></li>
+                                    <li><a href="/">首页</a></li>
+                                    <li><a style="cursor: pointer" onclick="sessionStorage.clear();location.href='/login'">退出登录</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -92,7 +71,7 @@
                         </svg>
                     </button>
                     <!-- /toggle -->
-                    <form class="search-wrapper">
+                    <form class="search-wrapper" onsubmit="return false;">
                         <div class="search-form">
                             <input type="text" class="tt-search__input" placeholder="搜索帖子">
                             <button class="tt-search__btn" type="submit">
@@ -111,18 +90,32 @@
                 <!-- /tt-search -->
             </div>
 
-            <div class="col-auto ml-auto">
-                <div class="tt-user-info d-flex justify-content-center">
-                    <a id="js-settings-btn" class="tt-btn-icon">
-                        <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
-                    </a>
-                    <div class="tt-avatar-icon tt-size-md">
-                        <i class="tt-icon"><svg><use xlink:href="#icon-ava-j"></use></svg></i>
+            <div class="col-auto ml-auto" id="header_User">
+                <!-- 如果有token,表示登录了账号 -->
+                <template v-if="hasToken!==''">
+                    <div class="col-auto ml-auto">
+                        <div class="tt-user-info d-flex justify-content-center">
+                            <a id="js-settings-btn" class="tt-btn-icon">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-settings_fill"></use></svg></i>
+                            </a>
+                            <div class="tt-avatar-icon tt-size-md">
+                                <i class="tt-icon"><svg><use v-bind:xlink:href="name_picture()"></use></svg></i>
+                            </div>
+                            <a href="/user-setting" title="个人中心" class="tt-btn-icon">
+                                <span>{{username}}</span>
+                            </a>
+                        </div>
                     </div>
-                    <a href="page-single-user.html" class="tt-btn-icon">
-                        <span>Jax Bob</span>
-                    </a>
-                </div>
+                </template>
+                <!-- 否则就没有登录账号 -->
+                <template v-else>
+                    <div class="col-auto ml-auto">
+                        <div class="tt-account-btn">
+                            <a href="/login" class="btn btn-primary">登录</a>
+                            <a href="/sign-up" class="btn btn-secondary">注册</a>
+                        </div>
+                    </div>
+                </template>
             </div>
 
         </div>
@@ -141,46 +134,6 @@
         </div>
     </div>
 </main>
-<div id="js-popup-settings" class="tt-popup-settings">
-	<div class="tt-btn-col-close">
-		<a href="#">
-			<span class="tt-icon-title">
-				<svg>
-					<use xlink:href="#icon-settings_fill"></use>
-				</svg>
-			</span>
-			<span class="tt-icon-text">
-				设置
-			</span>
-			<span class="tt-icon-close">
-				<svg>
-					<use xlink:href="#icon-cancel"></use>
-				</svg>
-			</span>
-		</a>
-	</div>
-	<form class="form-default">
-		<div class="form-group">
-		    <label for="settingsUserName">用户名</label>
-		   <input type="text" name="name" class="form-control" id="settingsUserName" placeholder="azyrusmax">
-		</div>
-		<div class="form-group">
-		    <label for="settingsUserEmail">电子邮箱</label>
-		   <input type="text" name="name" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com">
-		</div>
-		<div class="form-group">
-		    <label for="settingsUserPassword">密码</label>
-		   <input type="password" name="name" class="form-control" id="settingsUserPassword" placeholder="************">
-		</div>
-		<div class="form-group">
-		    <label for="settingsUserAbout">介绍</label>
-		    <textarea name="" placeholder="Few words about you" class="form-control" id="settingsUserAbout"></textarea>
-		</div>
-		<div class="form-group">
-			<a href="#" class="btn btn-secondary">Save</a>
-		</div>
-		</form>
-</div>
 <a href="page-create-topic.html" class="tt-btn-create-topic">
     <span class="tt-icon">
         <svg>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>BBS论坛</title>
+    <title>BBS论坛 - 注册</title>
     <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,7 +46,7 @@
                         加入论坛以释放社区的真正力量！
                     </div>
                 </div>
-                <form class="form-default">
+                <form class="form-default" onsubmit="return false;">
                     <div class="form-group">
                         <label for="signUpUserName">用户名</label>
                         <input type="text" v-model="name" class="form-control" title="只允许英文名" placeholder="输入英文名" pattern="^[ a-zA-Z]{1,}$" id="signUpUserName" required>

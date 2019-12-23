@@ -26,11 +26,6 @@ public class LoginController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/")
-    public String home() {
-        return "index";
-    }
-
     @GetMapping("/login")
     public String login() {
         return "page-login";
