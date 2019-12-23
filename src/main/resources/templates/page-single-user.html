@@ -409,7 +409,20 @@
 
 </body>
 <script>
-
+    /* 头部检查用户是否登录 */
+    var vue_User = new Vue({
+        el: "#header_User",
+        data: {
+            hasToken: sessionStorage.getItem("token") !== null ? sessionStorage.getItem("token") : "",
+            username: sessionStorage.getItem("username"),
+            userID: sessionStorage.getItem("userID")
+        },
+        methods: {
+            name_picture: function() {
+                return "#icon-ava-" + this.username.substr(0,1).toLowerCase();
+            }
+        }
+    });
     var vue = new Vue({
         el:"#app",
         data:{
