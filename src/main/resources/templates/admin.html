@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>BBS管理中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <link rel="stylesheet" href="../fonts/icomoon/stylesheet.css"/>
     <link rel="stylesheet" href="../css/bootstrap.min.css"/>
@@ -16,10 +17,23 @@
             color: black;
             text-decoration: none;
             cursor: pointer;
+            word-wrap: break-word;
         }
         .post_title:hover {
             color: #64d1ff;
             text-decoration: black underline;
+        }
+        .post_user {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .post_user:hover {
+            color: #9fca7c;
+            text-decoration: RED underline;
+        }
+        .center_Text {
+            text-align: center;
         }
     </style>
 </head>
@@ -30,28 +44,28 @@
 <div style="margin: 50px auto" id="app">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">&emsp;帖子&emsp;</a></li>
-        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">&emsp;用户&emsp;</a></li>
-        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+        <li role="presentation" class="active"><a href="#forum" id="tab_1" aria-controls="forum" role="tab" data-toggle="tab">&emsp;帖子&emsp;</a></li>
+        <li role="presentation"><a href="#user" id="tab_2" aria-controls="user" role="tab" data-toggle="tab">&emsp;用户&emsp;</a></li>
+        <li role="presentation"><a href="#forumContents" id="tab_3" aria-controls="morething_Forum" role="tab" data-toggle="tab">帖子详情</a></li>
+        <li role="presentation"><a href="#userContents" id="tab_4" aria-controls="morething_User" role="tab" data-toggle="tab">用户详情</a></li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content" >
         <!-- 帖子 -->
-        <div role="tabpanel" class="tab-pane active" id="home">
+        <div role="tabpanel" class="tab-pane active" id="forum">
             <table class="table table-hover">
                 <tr>
-                    <th style="text-align: center">#</th>
-                    <th style="text-align: center">帖子标题</th>
-                    <th style="text-align: center">用户名</th>
-                    <th style="text-align: center">版块</th>
-                    <th style="text-align: center">发帖时间</th>
-                    <th style="text-align: center">悬赏问题</th>
-                    <th style="text-align: center">悬赏币</th>
-                    <th style="text-align: center">置顶</th>
-                    <th style="text-align: center">加精</th>
-                    <th style="text-align: center">操作</th>
+                    <th class="center_Text">#</th>
+                    <th class="center_Text">帖子标题</th>
+                    <th class="center_Text">用户名</th>
+                    <th class="center_Text">版块</th>
+                    <th class="center_Text">发帖时间</th>
+                    <th class="center_Text">悬赏问题</th>
+                    <th class="center_Text">悬赏币</th>
+                    <th class="center_Text">置顶</th>
+                    <th class="center_Text">加精</th>
+                    <th class="center_Text">操作</th>
                 </tr>
 
                 <template v-if="posts==null">
@@ -60,18 +74,18 @@
                 <template v-else>
                     <template v-for="post in posts">
                         <tr>
-                            <td>{{indexOf(post) + 1}}</td>
-                            <td><span class="post_title">{{post.title}}</span></td>
-                            <td>{{post.username}}</td>
-                            <td>{{post.section.substr(2,post.section.length-2)}}</td>
-                            <td>{{post.time}}</td>
+                            <td class="center_Text">{{post.postID}}</td>
+                            <td><span class="post_title" @click="more_Forum(post.postID,post.userID)">{{post.title}}</span></td>
+                            <td class="center_Text post_user" @click="more_User(post.userID)">{{post.username}}</td>
+                            <td class="center_Text">{{post.section.substr(2,post.section.length-2)}}</td>
+                            <td class="center_Text">{{post.time}}</td>
                             <template v-if="post.point>0">
-                                <td>是</td>
-                                <td>{{post.point - 1}}</td>
+                                <td class="center_Text"><span class="icon-moon" style="font-size: 20px;color: #72ca68">&#xeaf4;</span></td>
+                                <td class="center_Text">{{post.point - 1}}</td>
                             </template>
                             <template v-else>
-                                <td>否</td>
-                                <td>0</td>
+                                <td class="center_Text"><span class="icon-moon" style="font-size: 20px;color: #ca485e">&#xeaf6;</span></td>
+                                <td class="center_Text">0</td>
                             </template>
                             <template v-if="post.top>0">
                                 <td><button class="btn btn-block" style="width: 90px" @click="cancelTop(post.postID)">取消置顶</button></td>
@@ -83,11 +97,56 @@
                                 <td><button class="btn btn-block" style="width: 90px" @click="cancelDigest(post.postID)">取消加精</button></td>
                             </template>
                             <template v-else-if="post.point>0">
-                                <td><button class="btn btn-primary" style="width: 90px">悬赏</button></td>
+                                <td><button class="btn btn-primary" onclick="alert('悬赏无法操作！！！')" style="width: 90px">悬赏</button></td>
                             </template>
                             <template v-else>
                                 <td><button class="btn btn-success" style="width: 90px" @click="digest(post.postID)">加精</button></td>
                             </template>
+                            <td>
+                                <table style="text-align: center">
+                                    <tr>
+                                        <td width="60"><button class="btn btn-warning" @click="more_Forum(post.postID,post.userID)">修改</button></td>
+                                        <td width="60"><button class="btn btn-danger" @click="deletePost(post.postID)">删除</button></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </template>
+                </template>
+            </table>
+        </div>
+        <!-- 用户 -->
+        <div role="tabpanel" class="tab-pane" id="user">
+            <table class="table table-hover">
+                <tr>
+                    <th class="center_Text">#</th>
+                    <th class="center_Text">用户名</th>
+                    <th class="center_Text">用户密码</th>
+                    <th class="center_Text">财富</th>
+                    <th class="center_Text">性别</th>
+                    <th class="center_Text">电话</th>
+                    <th class="center_Text">工作</th>
+                    <th class="center_Text">地址</th>
+                    <th class="center_Text">个人简介</th>
+                    <th class="center_Text">操作</th>
+                </tr>
+
+                <template v-if="users==null">
+                    <tr><td colspan="10" class="center_Text">无用户记录</td></tr>
+                </template>
+                <template v-else>
+                    <template  v-for="user in users">
+
+                        <tr>
+                            <td class="center_Text">{{user.userID}}</td>
+                            <td class="center_Text post_title">{{user.username}}</td>
+                            <td class="center_Text post_user">{{user.password}}</td>
+                            <td class="center_Text">{{user.wealth}}</td>
+                            <td class="center_Text">{{user.gender}}</td>
+                            <td class="center_Text">{{user.telephone}}</td>
+                            <td class="center_Text">{{user.job}}</td>
+                            <td class="center_Text">{{user.address}}</td>
+                            <td class="center_Text">{{user.introduce}}</td>
                             <td>
                                 <table style="text-align: center">
                                     <tr>
@@ -97,13 +156,94 @@
                                 </table>
                             </td>
                         </tr>
+
                     </template>
                 </template>
             </table>
         </div>
-        <div role="tabpanel" class="tab-pane" id="profile">.asf..</div>
-        <div role="tabpanel" class="tab-pane" id="messages">.safasd..</div>
-        <div role="tabpanel" class="tab-pane" id="settings">..asdf.</div>
+        <!-- 帖子详情 -->
+        <div role="tabpanel" class="tab-pane" id="forumContents">
+            <template v-if="postID==null">
+                <h3 style="margin: 100px auto;text-align: center">请选择一个帖子进行修改！！！</h3>
+            </template>
+            <template v-else>
+                <template v-if="post==null">
+                    <h3 style="margin: 100px auto;text-align: center">该帖子不存在！！！</h3>
+                </template>
+                <template v-else>
+                    <div>
+                        <form class="form-horizontal" style="padding: 4px 10px">
+                            <h3 style="text-align: center">帖子详情</h3>
+                            <div class="form-group">
+                                <label for="postTitle" class="col-sm-2 control-label" style="font-size: 17px">帖子标题</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="postTitle" v-bind:value="post.title" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="postUser" class="col-sm-2 control-label" style="font-size: 17px">发帖人</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="postUser" disabled v-bind:value="post_User.username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="section" class="col-sm-2 control-label" style="font-size: 17px;margin-top: 15px">版块</label>
+                                <div class="col-sm-2" style="margin-top: 15px;">
+                                    <input type="text" style="width: 100px" class="form-control" v-bind:value="'当前：' + post.section.substr(2,post.section.length - 2)" disabled>
+                                </div>
+                                <div class="col-sm-6" style="margin-top: 15px;">
+                                    <select id="section" class="form-control"  style="width: 100px">
+                                        <template v-for="section in sections">
+                                            <option v-bind:value="section">{{section.substr(2,section.length - 2)}}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="isPoint" class="col-sm-2 control-label" style="font-size: 17px">悬赏帖</label>
+                                <div class="col-sm-10">
+                                    <template v-if="post.point>0">
+                                        <span id="isPoint" class="icon-moon" style="font-size: 26px;color: #72ca68">&#xeaf4;</span></td>
+                                    </template>
+                                    <template v-else>
+                                        <span id="isPoint" class="icon-moon" style="font-size: 26px;color: #ca485e">&#xeaf6;</span></td>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="time" class="col-sm-2 control-label" style="font-size: 17px">发帖时间</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="time" disabled v-bind:value="post.time">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contents" class="col-sm-2 control-label" style="font-size: 17px">帖子内容</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" style="height: 250px" id="contents">
+                                        {{post.content}}
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button onclick="vue.submitIt()" class="btn btn-primary">修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </template>
+
+            </template>
+        </div>
+        <!-- 用户详情 -->
+        <div role="tabpanel" class="tab-pane" id="userContents">
+            <template v-if="userID==null">
+                <h3 style="margin: 100px auto;text-align: center">请选择一个用户进行修改！！！</h3>
+            </template>
+            <template v-else>
+
+            </template>
+        </div>
     </div>
 </div>
 
@@ -112,7 +252,14 @@
         el: "#app",
         data: {
             posts: null,
-            username: sessionStorage.getItem("name") == null ? "" : sessionStorage.getItem("name")
+            users: null,
+            postID: null,
+            post: null,
+            post_User: null,
+            userID: null,
+            user: null,
+            sections: ["01科技","02学习","03宗教","04宠物","05Java","06电影","07音乐","08C++","09动漫","10文学","11游戏","12情感"],
+            username: sessionStorage.getItem("adminName") == null ? "" : sessionStorage.getItem("adminName")
         },
         methods: {
             // 帖子的索引
@@ -124,59 +271,132 @@
                         return i;
                 return -1;
             },
+            // 获得所有的帖子
             getAllPosts:function() {
                 this.$http.get("/admin/getpostlist").then(function(value) {
                     this.posts = value.body;
                 },function(reason) {
-
+                    alert("服务器提示一个错误！");
                 });
             },
+            // 获得一个帖子
+            getOnePost(userID) {
+                this.$http.post("/admin/getPostAndUser",{postID:this.postID,userID:userID},{emulateJSON: true}).then(function(value) {
+                    this.post = value.body.post;
+                    this.post_User = value.body.user;
+                },function(reason) {
+                    alert(reason)
+                })
+            },
+            // 获得所有的用户
+            getAllUsers:function() {
+                this.$http.get("/admin/getUserList").then(function(value) {
+                    this.users = value.body;
+                },function(reason) {
+                    alert("服务器提示一个错误！");
+                });
+            },
+            // 获得一个用户
+            getOneUser(userID) {
+                this.$http.get("/user/getUser",{userID:userID},{emulateJSON: true}).then(function(value) {
+                    this.user = value.body;
+                },function(reason) {
+                    alert(reason)
+                })
+            },
+            // 取消置顶
             cancelTop:function(postID) {
-                this.$http.post("/admin/cancelTop",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            toTop:function(postID) {
-                this.$http.post("/admin/top",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            digest:function(postID) {
-                this.$http.post("/admin/digest",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            cancelDigest:function(postID) {
-                this.$http.post("/admin/cancelDigest",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
-            },
-            updatePost(postID) {
+                if(this.username === "") {
+                    alert("请先登录！！！");
+                    location.href = "/admin/";
+                }else {
+                    this.$http.post("/admin/cancelTop",{postID:postID},{emulateJSON: true}).then(function(value) {
+                        this.getAllPosts();
+                    },function(reason) {
+                        alert(reason);
+                    })
+                }
 
             },
+            // 置顶
+            toTop:function(postID) {
+                if(this.username === "") {
+                    alert("请先登录！！！");
+                    location.href = "/admin/";
+                }else {
+                    this.$http.post("/admin/top",{postID:postID},{emulateJSON: true}).then(function(value) {
+                        this.getAllPosts();
+                    },function(reason) {
+                        alert(reason);
+                    })
+                }
+
+            },
+            // 加精
+            digest:function(postID) {
+                if(this.username === "") {
+                    alert("请先登录！！！");
+                    location.href = "/admin/";
+                }else {
+                    this.$http.post("/admin/digest",{postID:postID},{emulateJSON: true}).then(function(value) {
+                        this.getAllPosts();
+                    },function(reason) {
+                        alert(reason);
+                    })
+                }
+            },
+            // 取消加精
+            cancelDigest:function(postID) {
+                if(this.username === "") {
+                    alert("请先登录！！！");
+                    location.href = "/admin/";
+                }else {
+                    this.$http.post("/admin/cancelDigest",{postID:postID},{emulateJSON: true}).then(function(value) {
+                        this.getAllPosts();
+                    },function(reason) {
+                        alert(reason);
+                    })
+                }
+            },
+            // 修改贴子
+            updatePost(postID) {
+                if(this.username === "") {
+                    alert("请先登录！！！");
+                    location.href = "/admin/";
+                }
+            },
+            // 删除贴子
             deletePost(postID) {
-                this.$http.post("/admin/deletePost",{postID:postID},{emulateJSON: true}).then(function(value) {
-                    alert(value.body.msg);
-                    this.getAllPosts();
-                },function(reason) {
-                    alert(reason);
-                })
+                if(this.username === "") {
+                    alert("请先登录！！！");
+                    location.href = "/admin/";
+                }else {
+                    this.$http.post("/admin/deletePost",{postID:postID},{emulateJSON: true}).then(function(value) {
+                        alert(value.body.msg);
+                        this.getAllPosts();
+                    },function(reason) {
+                        alert(reason);
+                    })
+                }
+            },
+            more_Forum(postID,userID) {
+                this.postID = postID;
+                this.getOnePost(userID);
+                $("#tab_3").click();
+            },
+            more_User(userID) {
+                this.userID = userID;
+                this.getOneUser(userID);
+                $("#tab_4").click();
             }
         }
     });
     if(vue.$data.username === '') {
         alert("请先登录！！！");
-        location.href = "/admin";
+        location.href = "/admin/";
     }else {
         vue.getAllPosts();
+        vue.getAllUsers();
     }
 </script>
 </body>

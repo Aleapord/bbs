@@ -69,7 +69,7 @@ public class AdminController {
     @GetMapping("/getpostlist")
     @ResponseBody
     public List<Post> getPosts() {
-        return postService.getAllPost();
+        return postService.getAllSortedByTimePost();
     }
     @PostMapping("/deletePost")
     @ResponseBody
@@ -146,6 +146,17 @@ public class AdminController {
         postService.updatePostbyPost(post);
         msg="取消加精成功！";
         hashMap.put("msg",msg);
+        return hashMap;
+    }
+
+    @PostMapping("/getPostAndUser")
+    @ResponseBody
+    public HashMap<String,Object> getPostAndUser(int postID,int userID){
+        HashMap<String,Object> hashMap = new HashMap<>();
+        Post post = postService.getPost(postID);
+        hashMap.put("post",post);
+        User user = userService.getUser(userID);
+        hashMap.put("user",user);
         return hashMap;
     }
 

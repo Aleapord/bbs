@@ -17,6 +17,10 @@ public class PostService {
         return postMapper.getAllPost();
     }
 
+    public List<Post> getAllSortedByTimePost() {
+        return postMapper.getAllSortedByTimePosts();
+    }
+
     /* 获得排序了的帖子列表 */
     public List<Post> getSortedPost() {
         List<Post> posts = getAllPost();

@@ -13,6 +13,9 @@ public interface PostMapper {
     @Select("select * from post order by top desc")
     List<Post> getAllPost();
 
+    @Select("select * from post order by time")
+    List<Post> getAllSortedByTimePosts();
+
     @Select("select * from post where userID = #{userID}")
     List<Post> getUserPost(@Param("userID") int userID);
 

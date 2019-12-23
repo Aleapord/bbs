@@ -20,7 +20,7 @@
 </head>
 <body>
     <div id="app" style="position: fixed;top: calc(50% - 150px);left: calc(50% - 250px);width: 500px;box-shadow: 0 0 20px gray;border-radius: 20px;padding: 30px">
-        <form class="form-horizontal">
+        <form class="form-horizontal" onsubmit="return false;">
             <h3 style="text-align: center">管理员登录</h3>
             <div class="form-group">
                 <label for="inputName" class="col-sm-2 control-label" style="font-size: 17px">账户</label>
@@ -51,14 +51,6 @@
         </form>
     </div>
 
-    <div id="popBox" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <span>asdoajdgoajgoasdkj</span>
-            </div>
-        </div>
-    </div>
-
 </body>
 <script type="text/javascript">
     var vue = new Vue({
@@ -72,7 +64,7 @@
                 if(this.name !== "" && this.password !== "") {
                     this.$http.post("/admin/login",{name: this.name,password: this.password},{emulateJSON: true}).then(function(value) {
                         if(value.body.status === 1) {
-                            sessionStorage.setItem("name",this.name);
+                            sessionStorage.setItem("adminName",this.name);
                             alert("登录成功！！！");
                             location.href = '/admin/center';
                         }else {
