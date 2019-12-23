@@ -46,7 +46,7 @@ public class UserController {
     public HashMap<String,Object> updateUser(User user){
         HashMap<String,Object> hashMap = new HashMap<>();
 
-       userService.updateUser(user);
+        userService.updateUser(user);
         hashMap.put("msg","修改成功！");
         return hashMap;
     }

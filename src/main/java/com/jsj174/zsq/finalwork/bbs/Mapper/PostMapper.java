@@ -52,7 +52,7 @@ public interface PostMapper {
     @Delete("delete from post where postID = #{postID}")
     void deletePost(@Param("postID") int postID);
 
-    @Update("update post set userID=#{post.userID},title=#{post.title},content=#{post.content},section=#{post.section},point=#{post.point} where postID={post.postID}")
+    @Update("update post set title=#{post.title},content=#{post.content},section=#{post.section},point=#{post.point} where postID=#{post.postID}")
     void updatePost(@Param("post") Post post);
     @Select("select * from post where section = #{section}")
     List<Post> getSectionPost(@Param("section") String section);

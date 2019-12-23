@@ -92,7 +92,7 @@ public class AdminController {
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
         userService.deleteUser(userID);
-        msg="删除成功";
+        msg="已成功删除该用户！！！";
         hashMap.put("msg",msg);
         return hashMap;
     }
@@ -144,7 +144,7 @@ public class AdminController {
         HashMap<String,Object> hashMap = new HashMap<>();
         String msg = "";
         postService.updatePostbyPost(post);
-        msg="取消加精成功！";
+        msg="修改帖子成功！";
         hashMap.put("msg",msg);
         return hashMap;
     }

@@ -37,6 +37,7 @@ public class PostService {
             }
         }
 
+        temp.sort((p1,p2) -> p2.getTime().compareTo(p1.getTime()));
         temp_1.sort((p1, p2) -> p2.getTime().compareTo(p1.getTime()));
 
         temp.addAll(temp_1);
