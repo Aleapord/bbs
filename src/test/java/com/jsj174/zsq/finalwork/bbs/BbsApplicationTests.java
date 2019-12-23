@@ -26,9 +26,6 @@ class BbsApplicationTests {
     @Test
     void contextLoads() {
 
-        postService.updateLikes(2);
-
-
     }
 
 }
