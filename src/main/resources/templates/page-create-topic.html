@@ -558,7 +558,7 @@
                         $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>发帖成功！财富 +10</td></tr>");
                     }else {
                         $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: limegreen'>&#xeaf4;</td><td>悬赏发布成功！财富 -" +
-                            vue_PostForum.$data.questionCoin + "</td></tr>");
+                            (vue_PostForum.$data.questionCoin - 1) + "</td></tr>");
                     }
                     popMessage();
                     setTimeout(function() {location.reload()},1000);

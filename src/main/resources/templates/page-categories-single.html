@@ -189,7 +189,7 @@
                             <div class="row align-items-center no-gutters">
                                 <div class="col-11">
                                     <ul class="tt-list-badge">
-                                        <li class="show-mobile"><a href="/single-section"><span class="tt-badge" v-bind:class="section_color(post.section)"><span style="color: white">{{post.section.substr(2,post.section.length-2)}}</span></span></a></li>
+                                        <li class="show-mobile"><a href="/single-section" @click="sessionStorage.setItem('current_section',post.section)"><span class="tt-badge" v-bind:class="section_color(post.section)"><span style="color: white">{{post.section.substr(2,post.section.length-2)}}</span></span></a></li>
                                         <li><a style="cursor: pointer"><span class="tt-badge">{{post.username}}</span></a></li>
 
                                         <!-- 设置是否有悬赏 -->

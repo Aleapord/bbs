@@ -143,46 +143,62 @@
                     <div class="tab-pane tt-indent-none  show active" id="tt-tab-01" role="tabpanel">
                         <div class="tt-topic-list">
 
-                            <template v-for="post in my_posts">
-                                <div class="tt-item">
-                                    <div class="tt-col-avatar" style="cursor: crosshair" v-bind:title="post.username">
-                                        <svg class="tt-icon">
-                                            <use v-bind:xlink:href="name_picture(post.username)"></use>
+                            <template v-if="my_posts===null||my_posts.length===0">
+                                <div class="tt-layout-404">
+                                    <span class="tt-icon">
+                                        <svg class="icon">
+                                            <use xlink:href="#icon-error_404"></use>
                                         </svg>
+                                    </span>
+                                    <h6 class="tt-title">啊哦！？</h6>
+                                    <p style="margin: 0;margin-bottom: 5px">你还没有发过帖子呢！</p>
+                                    <div class="form-group">
+                                        <a href="/page-create-topic.html" class="btn btn-secondary btn-block">去发帖子</a>
                                     </div>
-                                    <div class="tt-col-description">
-                                        <h6 class="tt-title"><a style="cursor: pointer" title="查看帖子详情" @click="readForum(post.postID)">
-                                            {{post.title}}
-                                        </a></h6>
-                                        <div class="tt-col-message">
-                                            <span class="wrapWord">{{post.content.length>40?(post.content.substr(0,40)+' ... ...'):post.content}}</span></div>
-                                        <div class="row align-items-center no-gutters hide-desktope">
-                                            <div class="col-9">
-                                                <ul class="tt-list-badge">
-                                                    <!-- 设置是否有悬赏 -->
-                                                    <template v-if="post.point>0">
-                                                        <li class="show-mobile"><a style="cursor: pointer" v-bind:title="'悬赏币：' + (post.point - 1)"><span class="tt-badge tt-color18"><span class="icon-moon" style="color: #84f99c;font-size: 20px">&#xeef0;</span><span>&nbsp;{{post.point - 1}}</span></span></a></li>
-                                                    </template>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3 ml-auto show-mobile">
-                                                <div class="tt-value"><span class="wrapWord">{{new Date(post.time).format("yyyy/MM/dd")}}</span></div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <template v-for="post in my_posts">
+                                    <div class="tt-item">
+                                        <div class="tt-col-avatar" style="cursor: crosshair" v-bind:title="post.username">
+                                            <svg class="tt-icon">
+                                                <use v-bind:xlink:href="name_picture(post.username)"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="tt-col-description">
+                                            <h6 class="tt-title"><a style="cursor: pointer" title="查看帖子详情" @click="readForum(post.postID)">
+                                                {{post.title}}
+                                            </a></h6>
+                                            <div class="tt-col-message">
+                                                <span class="wrapWord">{{post.content.length>40?(post.content.substr(0,40)+' ... ...'):post.content}}</span></div>
+                                            <div class="row align-items-center no-gutters hide-desktope">
+                                                <div class="col-9">
+                                                    <ul class="tt-list-badge">
+                                                        <!-- 设置是否有悬赏 -->
+                                                        <template v-if="post.point>0">
+                                                            <li class="show-mobile"><a style="cursor: pointer" v-bind:title="'悬赏币：' + (post.point - 1)"><span class="tt-badge tt-color18"><span class="icon-moon" style="color: #84f99c;font-size: 20px">&#xeef0;</span><span>&nbsp;{{post.point - 1}}</span></span></a></li>
+                                                        </template>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-3 ml-auto show-mobile">
+                                                    <div class="tt-value"><span class="wrapWord">{{new Date(post.time).format("yyyy/MM/dd")}}</span></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tt-col-category tt-col-value-large hide-mobile"><a href="/single-section" @click="sessionStorage.setItem('current_section',post.section)" class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</a></div>
-                                    <div  @click="deletePost(post.postID)" class="tt-col-value-large hide-mobile">
+                                        <div class="tt-col-category tt-col-value-large hide-mobile"><a href="/single-section" @click="sessionStorage.setItem('current_section',post.section)" class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</a></div>
+                                        <div  @click="deletePost(post.postID)" class="tt-col-value-large hide-mobile">
                                         <span style="cursor: pointer" title="删除" class="tt-btn-icon">
                                             <span class="tt-icon"><span class="icon-moon" style="font-size: 30px;">&#xeb31;</span></span>
                                         </span>
+                                        </div>
+                                        <div @click="sessionStorage.setItem('edit_postID',post.postID)" class="tt-col-value-large hide-mobile">
+                                            <a href="/update-forum" title="修改" class="tt-btn-icon">
+                                                <span class="tt-icon"><span class="icon-moon" style="font-size: 30px;">&#xe906;</span></span>
+                                            </a>
+                                        </div>
+                                        <div class="tt-col-value-large hide-mobile"><span class="wrapWord">{{new Date(post.time).format("hh:mm yy/MM/dd")}}</span></div>
                                     </div>
-                                    <div @click="sessionStorage.setItem('edit_postID',post.postID)" class="tt-col-value-large hide-mobile">
-                                        <a href="/update-forum" title="修改" class="tt-btn-icon">
-                                            <span class="tt-icon"><span class="icon-moon" style="font-size: 30px;">&#xe906;</span></span>
-                                        </a>
-                                    </div>
-                                    <div class="tt-col-value-large hide-mobile"><span class="wrapWord">{{new Date(post.time).format("hh:mm yy/MM/dd")}}</span></div>
-                                </div>
+                                </template>
                             </template>
 
                             <div class="tt-row-btn">

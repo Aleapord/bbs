@@ -154,14 +154,14 @@
                                     <a style="cursor: pointer">{{post.username}}</a>
                                 </div>
                                 <a class="tt-info-time hand_Link01">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>{{new Date(post.time).format("yyyy/MM/dd hh:mm:ss")}}
+                                    <i class="tt-icon" v-bind:title="new Date(post.time).format('yyyy/MM/dd hh:mm:ss')"><svg><use xlink:href="#icon-time"></use></svg></i>{{new Date(post.time).format("MM/dd")}}
                                 </a>
                             </div>
                             <h3 class="tt-item-title">
                                 <a class="hand_Link01">{{post.title}}</a>
                             </h3>
                             <div class="tt-item-tag">
-                                <span class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</span>
+                                <span href="/single-section" @click="sessionStorage.setItem('current_section',post.section)" class="tt-badge" v-bind:class="section_color(post.section)">{{post.section.substr(2,post.section.length-2)}}</span>
 
                                 <!-- 设置是否有悬赏 -->
                                 <template v-if="post.point>0">
@@ -193,15 +193,7 @@
 
                             </a>
                             <div class="col-separator"></div>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-share"></use></svg></i>
-                            </a>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-flag"></use></svg></i>
-                            </a>
-                            <a style="cursor: pointer;user-select: none" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -244,13 +236,13 @@
 
                                         <!-- 判断回答是否已采纳 -->
                                         <template v-if="comment.answer!==0">
-                                            <img src="images/getPoint.png" style="display: inline-block;cursor: pointer" title="已采纳" alt="已采纳" width="60">
+                                            <img src="images/getPoint.png" style="display: inline-block;cursor: pointer" title="已采纳" alt="已采纳" width="50">
                                         </template>
 
                                     </div>
 
                                     <a class="tt-info-time hand_Link01">
-                                        <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>{{new Date(comment.time).format("yyyy/MM/dd hh:mm:ss")}}
+                                        <i class="tt-icon" v-bind:title="new Date(comment.time).format('yyyy/MM/dd hh:mm:ss')"><svg><use xlink:href="#icon-time"></use></svg></i>{{new Date(comment.time).format("MM/dd")}}
                                     </a>
                                 </div>
                             </div>
@@ -262,22 +254,14 @@
                                 <div class="col-separator"></div>
 
                                 <!-- 判断是否还有悬赏 -->
-                                <template v-if="post.point!==1">
+                                <template v-if="post.point>=1">
                                     <!-- 当前用户是发悬赏的人 -->
                                     <template v-if="checkUser()">
                                         <span class="tt-badge bt_Yes" v-bind:data-commentid="comment.commentID" onclick="getAnswer(this)" style="position: relative;right: 22px">&emsp;采纳&emsp;</span>
                                     </template>
                                 </template>
 
-                                <a class="tt-icon-btn tt-hover-02 tt-small-indent hand_Link02">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-share"></use></svg></i>
-                                </a>
-                                <a class="tt-icon-btn tt-hover-02 tt-small-indent hand_Link02">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-flag"></use></svg></i>
-                                </a>
-                                <a class="tt-icon-btn tt-hover-02 tt-small-indent hand_Link02">
-                                    <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-                                </a>
+
                             </div>
                         </div>
                     </div>
@@ -562,6 +546,8 @@
                 var url = "/post/getComments/"+this.postID;
                 this.$http.get(url).then(function (value) {
                     this.comments=value.body;
+                    this.users = this.getUsers();
+                    this.users = this.removeCommonUser();
                 },function (reason) { console.log("失败！") })
             },
             like:function(){
@@ -647,7 +633,7 @@
                     $("#popContents").html("<tr><td class='icon-moon' style='font-size: 25px;width: 40px;color: #cd645d'>&#xeaf6;</td><td>服务器提示了一个错误！</td></tr>");
                     popMessage();
                 });
-            }
+            },
         }
     });
     if(vue.$data.postID !== null) {
